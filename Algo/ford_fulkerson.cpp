@@ -13,7 +13,7 @@ class edge{
 /*
 O(E*F) where F is the maximum flow
 How to use:
-create an object ford_fulkerson(number of node, source node,sink node);
+create an object ford_fulkerson(number of nodes, source node,sink node);
 add the edges of the graph with addEdge function;
 compute the flow with calc();
 */
