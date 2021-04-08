@@ -10,17 +10,19 @@ class edge{
   edge(int t,int c,int r): to{t},cap{c},rev{r}
   {}
 };
-
+/*
+O(E*F) where F is the maximum flow
+How to use:
+create an object ford_fulkerson(number of node, source node,sink node);
+add the edges of the graph with addEdge function;
+compute the flow with calc();
+*/
 class ford_fulkerson{
   public:
   vector<vector<edge>> grafo;
   vector<bool> vistos;
   int s,t;
-  /*
-    n=size;
-    s=source;
-    t=sink;
-  */
+
   ford_fulkerson(int n,int s,int t){
     grafo=vector<vector<edge>>(n,vector<edge>());
     this->s=s;
