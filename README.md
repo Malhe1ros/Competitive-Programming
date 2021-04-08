@@ -26,7 +26,7 @@ Feel free to take and use whatever you want;
 Create = O(N);
 Union = O(1);\
 Find = O(1);\
-~That's actually the inverse ackermann function but whatever~\
+~That's actually the inverse ackermann function but whatever~
 
 *LazySegTree.cpp* = Segment tree with lazy propagation;\
 Create = O(N);\
@@ -36,9 +36,9 @@ Update = O(logN);\
 *SegTree.cpp* = Normal Segment tree;\
 Create = O(N);\
 Query = O(logN);\
-Update = O(logN);\
+Update = O(logN);
 
 *Sparse_table.cpp* = Sparse table\
 Create = O(N\*logN);\
 Query = O(1);\
-Update = O(don't);\
+~Update = O(don't);~
