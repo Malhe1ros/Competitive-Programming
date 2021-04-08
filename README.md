@@ -1,7 +1,7 @@
 # Competitive-Programming
 Algorithms and data structures for competitive programming
 
-I am trying to make this lib more "otherS-friendly" adding "How to use" documentations as some of the algorithms and data structures only i (or past i) knows what is going on the code;
+I am trying to make this lib more "others-friendly" adding "How to use" documentations as some of the algorithms and data structures only i (or past i) knows what is going on the code;
 
 Feel free to take and use whatever you want;
 
@@ -15,6 +15,7 @@ Feel free to take and use whatever you want;
 *ford_fulkerson.cpp* = Calculates the maximum flow in O(E\*F) using ford fulkerson algorithm;
 
 *hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;
+[this algorithm was made by IME-RJ team](https://github.com/splucs/Competitive-Programming/blob/master/Macac%C3%A1rio/Graphs/hungarian.cpp)
 
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
