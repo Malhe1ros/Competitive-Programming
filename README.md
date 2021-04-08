@@ -22,12 +22,23 @@ Feel free to take and use whatever you want;
 
 # Data structures:
 
-*DSU.cpp* = Disjoint set union with path compression and union by rank;
+*DSU.cpp* = Disjoint set union with path compression and union by rank;\
+Create = O(N);
+Union = O(1);\
+Find = O(1);\
+~That's actually the inverse ackermann function but whatever~\
 
-Union = O(1)
+*LazySegTree.cpp* = Segment tree with lazy propagation;\
+Create = O(N);\
+Range query = O(logN);\
+Update = O(logN);\
 
-Find = O(1)
+*SegTree.cpp* = Normal Segment tree;\
+Create = O(N);\
+Query = O(logN);\
+Update = O(logN);\
 
-~That's actually the inverse ackermann function but whatever~
-
-
+*Sparse_table.cpp* = Sparse table\
+Create = O(N\*logN);\
+Query = O(1);\
+Update = O(don't);\
