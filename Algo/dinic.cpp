@@ -10,6 +10,13 @@ class edge{
   edge(int t,int c,int r): to{t},cap{c},rev{r}
   {}
 };
+/* Computes maximum flow in O(E*V^2)
+How to use:
+create an object dinic(number of nodes, source node,sink node);
+add directed edges to the graph with addEdge(begin,end,capacity) function;
+compute the flow with fluxo();
+*/
+
 
 class dinic{
   public:
