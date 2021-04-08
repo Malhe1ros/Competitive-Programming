@@ -41,4 +41,3 @@ Update = O(logN);
 *Sparse_table.cpp* = Sparse table\
 Create = O(N\*logN);\
 Query = O(1);\
-~Update = O(don't);~
