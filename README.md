@@ -6,5 +6,28 @@ I am trying to make this lib more "other-friendly" adding "How to use" documenta
 Feel free to take and use whatever you want;
 
 # Algorithms:
-chtdeque.cpp = Convex hull trick for dynamic programming when functions and queries are in sorted order in O(n);
-convex_hull.cpp = Returns the convex hull of the points in O(n\*logn) [working but i will update]
+*chtdeque.cpp* = Convex hull trick for dynamic programming when functions and queries are in sorted order in O(N);
+
+*convex_hull.cpp* = Returns the convex hull of the points in O(N\*logN) [working but i will update];
+
+*dinic.cpp* = Calculates the maximum flow in O(E\*V²) using dinic's algorithm;
+
+*ford_fulkerson.cpp* = Calculates the maximum flow in O(E\*F) using ford fulkerson algorithm;
+
+*hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;
+
+*linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
+
+*polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
+
+# Data structures:
+
+*DSU.cpp* = Disjoint set union with path compression and union by rank;
+
+Union = O(1)
+
+Find = O(1)
+
+~That's actually the inverse ackermann function but whatever~
+
+
