@@ -2,6 +2,8 @@
 // complexidade : O(n^3)
 // Vertices enumerados de 0 a n - 1 
 
+//Feito por: https://github.com/splucs/Competitive-Programming/blob/master/Macac%C3%A1rio/Graphs/hungarian.cpp
+
 using coord = double; // tipo de dados
 
 const int MAXN = 500;
