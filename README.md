@@ -15,7 +15,6 @@ Feel free to take and use whatever you want;
 *ford_fulkerson.cpp* = Calculates the maximum flow in O(E\*F) using ford fulkerson algorithm;
 
 *hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;\
-(Disclaimer)[ this algorithm was made by IME-RJ team](https://github.com/splucs/Competitive-Programming/blob/master/Macac%C3%A1rio/Graphs/hungarian.cpp)
 
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
