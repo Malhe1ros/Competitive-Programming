@@ -14,7 +14,7 @@ Feel free to take and use whatever you want;
 
 *ford_fulkerson.cpp* = Calculates the maximum flow in O(E\*F) using ford fulkerson algorithm;
 
-*hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;\
+*hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;
 
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
@@ -23,7 +23,7 @@ Feel free to take and use whatever you want;
 # Data structures:
 
 *DSU.cpp* = Disjoint set union with path compression and union by rank;\
-Create = O(N);
+Create = O(N);\
 Union = O(1);\
 Find = O(1);\
 ~That's actually the inverse ackermann function but whatever~
@@ -31,7 +31,7 @@ Find = O(1);\
 *LazySegTree.cpp* = Segment tree with lazy propagation;\
 Create = O(N);\
 Range query = O(logN);\
-Update = O(logN);\
+Update = O(logN);
 
 *SegTree.cpp* = Normal Segment tree;\
 Create = O(N);\
@@ -40,7 +40,7 @@ Update = O(logN);
 
 *Sparse_table.cpp* = Sparse table\
 Create = O(N\*logN);\
-Query = O(1);\
+Query = O(1);
 
 *ordered_set.cpp* = Ordered set\
 find_by_order = O(logN);\
