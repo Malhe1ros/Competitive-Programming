@@ -41,3 +41,7 @@ Update = O(logN);
 *Sparse_table.cpp* = Sparse table\
 Create = O(N\*logN);\
 Query = O(1);\
+
+*ordered_set.cpp* = Ordered set\
+find_by_order = O(logN);\
+order_of_key = O(logN)
