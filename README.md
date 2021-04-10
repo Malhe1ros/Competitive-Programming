@@ -22,7 +22,7 @@ Feel free to take and use whatever you want;
 
 *Gaussian_XOR.cpp* = Gaussian elimination in using XOR in O(N³/64);
 
-<img src="https://render.githubusercontent.com/render/math?math=e^{i +\pi} =x+1">
+<img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}">
 
 # Data structures:
 
