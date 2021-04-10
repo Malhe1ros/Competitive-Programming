@@ -20,8 +20,9 @@ Feel free to take and use whatever you want;
 
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
-*Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=e^{i +\pi} =x+1">
- using XOR in O(N³/64);
+*Gaussian_XOR.cpp* = Gaussian elimination in using XOR in O(N³/64);
+
+<img src="https://render.githubusercontent.com/render/math?math=e^{i +\pi} =x+1">
 
 # Data structures:
 
