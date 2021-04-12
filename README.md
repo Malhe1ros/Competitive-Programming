@@ -8,6 +8,10 @@ Feel free to take and use whatever you want;
 # Algorithms:
 *chtdeque.cpp* = Convex hull trick for dynamic programming when functions and queries are in sorted order in O(N);
 
+*cht_dinamico.cpp* = Convex hull trick for dynamic programming in O(N*logN);\
+add = O(logN);\
+query = O(logN);
+
 *convex_hull.cpp* = Returns the convex hull of the points in O(N\*logN) [working but i will update];
 
 *dinic.cpp* = Calculates the maximum flow in O(E\*V²) using dinic's algorithm;
@@ -20,7 +24,10 @@ Feel free to take and use whatever you want;
 
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
-*Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;
+*Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
+add - <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^2}{64})">;\
+query - <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^2}{64})">;
+
 
 # Data structures:
 
