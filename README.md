@@ -25,8 +25,8 @@ query = O(logN);
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
 *Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
-add - <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^2}{64})">;\
-query - <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^2}{64})">;
+add - O(N²/64)
+query - O(N²/64)
 
 
 # Data structures:
