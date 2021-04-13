@@ -16,6 +16,12 @@ query = O(logN);
 
 *dinic.cpp* = Calculates the maximum flow in O(E\*V²) using dinic's algorithm;
 
+*farthest_point_direction.cpp* = Given a set of points, calculates the farthest one following some direction in O(N*logN)
+
+*Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
+add - O(N²/64);\
+query - O(N²/64);
+
 *ford_fulkerson.cpp* = Calculates the maximum flow in O(E\*F) using ford fulkerson algorithm;
 
 *hungarian.cpp* = Calculates the minimum cost bipartite matching in O(V³) using (~black magic of some sort~) the hungarian algorithm;
@@ -27,9 +33,8 @@ query = O(logN);
 
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
-*Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
-add - O(N²/64);\
-query - O(N²/64);
+
+*rotating_calipers.cpp* = Calculates the pair of points with greatest euclidean distance (diameter) in O(N) [You will need O(logN) to sort but if it is sorted works in O(N)]
 
 
 # Data structures:
