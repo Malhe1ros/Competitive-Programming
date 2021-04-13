@@ -34,7 +34,7 @@ query - O(N²/64);
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
 
-*rotating_calipers.cpp* = Calculates the pair of points with greatest euclidean distance (diameter) in O(N) [You will need O(logN) to sort but if it is sorted works in O(N)]
+*rotating_calipers.cpp* = Calculates the pair of points with greatest euclidean distance (diameter) in O(N) [You will need O(N*logN) to sort but if it is sorted works in O(N)]
 
 
 # Data structures:
