@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 /*
 HOW TO USE:
 PLEASE DON'T, I MEAN, IT HAS WORKED ON EVERY PROBLEM I NEEDED BUT I DON'T TRUST IT
@@ -156,17 +155,11 @@ int point_inside_down_hull(vector<Point> upper_hull,Point p){
 	if (p.x<upper_hull[0].x || p.x>upper_hull.back().x) return -1;
 	auto t=lower_bound(upper_hull.begin(),upper_hull.end(),Point(p.x,ninf));
 	if (t==upper_hull.begin()){
-		if(upper_hull[1].x==p.x){
-		if(p.y==upper_hull[1].y)return 0;
-		else if(p.y<upper_hull[1].y)return -1;
-		else return 1;
+		if (t->x==p.x){
+			if (t->y==p.y)return 0;
+			if (t->y<p.y)return 1;
+			return -1;
 		}
-		else{
-		if(p.y==upper_hull[0].y)return 0;
-		else if(p.y<upper_hull[0].y)return -1;
-		else return 1;
-		}
-
 	}
 	auto teste=*t;
 	t--;
@@ -180,12 +173,9 @@ int point_inside_down_hull(vector<Point> upper_hull,Point p){
 int point_inside(vector<Point> upper_hull,vector<Point> down_hull,Point p){
 	int ans1=point_inside_upper_hull(upper_hull,p);
 	int ans2=point_inside_down_hull(down_hull,p);
+	//cout<<ans1<<" "<<ans2<<endl;
 	if (ans1==-1 || ans2==-1) return -1;
 	if (ans1==0 || ans2==0) return 0;
 	return 1;
-	
-}
-
-int32_t main(){
 	
 }
