@@ -22,6 +22,9 @@ query = O(logN);
 
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
+*point_inside_convex_hull.cpp* = Find if a point is inside a convex hull in O(logN);\
+~That's probably the ugliest code i have written but it does the job~
+
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
 *Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
