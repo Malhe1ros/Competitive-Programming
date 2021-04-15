@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-//#define double long double
+#define double long double
+// can be used to solve Code Jam to I/O for Women 2020 Impromptu Outdoor Gallery
 struct Point{
     int x,y;
     Point(){
@@ -31,8 +32,8 @@ struct Vetor{
         x=b.x-a.x;
         y=b.y-a.y;
     }
-    int cross(Vetor other){
-        return x*other.y-y*other.x;
+    long long cross(Vetor other){
+        return (long long)x*other.y-(long long)y*other.x;
     }
     Point conv(){
         int rx=-y;
@@ -51,19 +52,16 @@ negative if A->B to the left of A->C;
 zero if collinear;
 positive if A->B to the right of A->C;
 */
-int cross(Point a,Point b,Point c){
+long long cross(Point a,Point b,Point c){
     return Vetor(a,b).cross(Vetor(a,c));
 }
 
 bool cmp(Point a,Point b){
     return cross(Point(0,0),a,b)>0;
 }
-bool cmp1(pair<Point,pair<Point,Point>> a,pair<Point,pair<Point,Point>> b){
+bool cmp1(pair<Point,pair<int,int>> a,pair<Point,pair<int,int>> b){
     if (a.first==b.first){
-        if(a.second.first==b.second.first){
-            return a.second.second<b.second.second;
-        }
-        return a.second.first<b.second.first;
+        return a.second<b.second;
     }
     return cmp(a.first,b.first);
 }
@@ -72,7 +70,7 @@ void polar_sort(vector<Point>&v){
     sort(v.begin(),v.end(),cmp);
 }
 double area(vector<Point> v,int a,int b,int c){
-    if (c<0 || c==v.size()) return 1e18;
+    if (c<0 || c==v.size()) return 1e30;
     return abs((double)cross(v[a],v[b],v[c]))/2;
 }
 
@@ -93,50 +91,48 @@ struct hash_pair {
 
 //it will return 0 in case there are collinear points
 double min_triangle(vector<Point> &v,int n){
-    vector<pair<Point,pair<Point,Point>>> novo;
+    vector<pair<Point,pair<int,int>>> novo;
     sort(v.begin(),v.end());
+    vector<int> hash(n);
     for (int i=0;i<n;i++){
         for (int j=i+1;j<n;j++){
-            novo.push_back({Vetor(v[i],v[j]).conv(),{v[i],v[j]}});
+            novo.push_back({Vetor(v[i],v[j]).conv(),{i,j}});
         }
     }
-    unordered_map<pair<int,int>,int,hash_pair> hash;
     for (int i=0;i<n;i++){
-        hash[ptp(v[i])]=i;
+        hash[i]=i;
     }
 
     sort(novo.begin(),novo.end(),cmp1);
-    double min_area=1e18;
-    int abbb;
-    cout<<novo.size()<<endl;
+    double min_area=1e30;
     for (int i=0;i<novo.size();i++){
         auto p1=novo[i].second.first;
         auto p2=novo[i].second.second;
-        int index1=hash[ptp(p1)];
-        int index2=hash[ptp(p2)];
+        int index1=hash[p1];
+        int index2=hash[p2];
         int mini=min(index1,index2);
         int maxi=max(index1,index2);
         int teste1=mini-1;
         int teste2=maxi+1;
-        min_area=min(min_area,area(v,index1,index2,teste1));
-        min_area=min(min_area,area(v,index1,index2,teste2));
+        min_area=min(min_area,area(v,index1,index2,teste2)+area(v,index1,index2,teste1));
         swap(v[index1],v[index2]);
-        hash[ptp(p1)]=index2;
-        hash[ptp(p2)]=index1;
+        hash[p1]=index2;
+        hash[p2]=index1;
         
     }
     return min_area;
 
 }
 
-int main(){
-    cout<<fixed;
-    while(1){
+int32_t main(){
+    int caso=1;
+    int t;
+    scanf("%d",&t);
+    while(t--){
     int n;scanf("%d",&n);
-    if (n==0) break;
     vector<Point>v(n);
     for (auto &k:v)scanf("%d%d",&k.x,&k.y);
-    cout<<min_triangle(v,n)<<endl;
+    cout<<"Case #"<<caso++<<": "<<(long long)(2*min_triangle(v,n)+1e-4)<<endl;
     }
 
 }
