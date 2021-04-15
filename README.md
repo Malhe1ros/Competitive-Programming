@@ -32,11 +32,9 @@ query - O(N²/64);
 
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
-*point_inside_convex_hull.cpp* = Find if a point is inside a convex hull in O(logN);\
-~That's probably the ugliest code i have written but it does the job~
+*point_inside_convex_hull.cpp* = Find if a point is inside a convex hull in O(logN);
 
 *polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
-
 
 *rotating_calipers.cpp* = Calculates the pair of points with greatest euclidean distance (diameter) in O(N) [You will need O(N*logN) to sort but if it is sorted works in O(N)]
 
