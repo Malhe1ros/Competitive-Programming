@@ -6,6 +6,10 @@ I am trying to make this lib more "others-friendly" adding "How to use" document
 Feel free to take and use whatever you want;
 
 # Algorithms:
+
+*all_point_pairs.cpp* = Algorithm that iterates over all pair of points and maintain the in a sorted order in O(N^2*logN);\
+Can be used to find the smallest traingle given a set of points 
+
 *chtdeque.cpp* = Convex hull trick for dynamic programming when functions and queries are in sorted order in O(N);
 
 *cht_dinamico.cpp* = Convex hull trick for dynamic programming in O(N*logN);\
