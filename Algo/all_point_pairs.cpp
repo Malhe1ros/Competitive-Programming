@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define double long double
-// can be used to solve Code Jam to I/O for Women 2020 Impromptu Outdoor Gallery
 struct Point{
     int x,y;
     Point(){
@@ -132,7 +131,7 @@ int32_t main(){
     int n;scanf("%d",&n);
     vector<Point>v(n);
     for (auto &k:v)scanf("%d%d",&k.x,&k.y);
-    cout<<"Case #"<<caso++<<": "<<(long long)(2*min_triangle(v,n)+1e-4)<<endl;
+    printf("Case #%d: %lld\n",caso++,(long long)(2*min_triangle(v,n)+1e-4));
     }
 
 }
