@@ -123,8 +123,8 @@ Point farthest_point(Point dir,vector<Point> v){
 	int e=v.size()-1;
 	int melhor=0;
 	while(b<e){
-		if (!(v[b]!=dir))b++;
-		if (!(v[e]!=dir))e--;
+		//if (!(v[b]!=dir))b++;
+		//if (!(v[e]!=dir))e--;
 		if (b>=e) break;
 		int test1=b+(e-b)/3;
 		int test2=e-(e-b)/3;
