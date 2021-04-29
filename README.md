@@ -47,10 +47,18 @@ Union = O(1);\
 Find = O(1);\
 ~That's actually the inverse ackermann function but whatever~
 
+
 *LazySegTree.cpp* = Segment tree with lazy propagation;\
 Create = O(N);\
 Range query = O(logN);\
 Update = O(logN);
+
+*Rollback_DSU.cpp* = Disjoint set union with option to undo some union;\
+Create = O(N);\
+Union = O(N);\
+Find = O(logN);\
+Persist = O(1);\
+Roolback = O(1) [amortized];
 
 *SegTree.cpp* = Normal Segment tree;\
 Create = O(N);\
