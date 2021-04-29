@@ -58,7 +58,7 @@ Create = O(N);\
 Union = O(N);\
 Find = O(logN);\
 Persist = O(1);\
-Roolback = O(1) [amortized];
+Rollback = O(1) [amortized];
 
 *SegTree.cpp* = Normal Segment tree;\
 Create = O(N);\
