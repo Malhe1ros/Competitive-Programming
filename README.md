@@ -16,7 +16,7 @@ Can be used to find the smallest traingle given a set of points
 add = O(logN);\
 query = O(logN);
 
-*convex_hull.cpp* = Returns the convex hull of the points in O(N\*logN) [working but i will update];
+*convex_hull.cpp* = Returns the convex hull of the points in O(N\*logN) 
 
 *dinic.cpp* = Calculates the maximum flow in O(E\*V²) using dinic's algorithm;
 
@@ -35,8 +35,6 @@ query - O(N²/64);
 *linear_sieve.cpp* = Calculates the sieve of eratosthenes and primes up to N in O(N);
 
 *point_inside_convex_hull.cpp* = Find if a point is inside a convex hull in O(logN);
-
-*polar_sort.cpp* = Sort some points using the polar coordinates in O(N\*logN);
 
 *rotating_calipers.cpp* = Calculates the pair of points with greatest euclidean distance (diameter) in O(N) [You will need O(N*logN) to sort but if it is sorted works in O(N)]
 
