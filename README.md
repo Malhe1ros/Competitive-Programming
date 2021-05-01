@@ -20,7 +20,9 @@ query = O(logN);
 
 *dinic.cpp* = Calculates the maximum flow in O(E\*V²) using dinic's algorithm;
 
-*farthest_point_direction.cpp* = Given a set of points, calculates the farthest one following some direction in O(N*logN)
+*DCO.cpp* = Dynamic Connectivitiy Offline(DSU with remove) in O(Q\*log(Q)\*log(N)) where Q=queries and N=size;
+
+*farthest_point_direction.cpp* = Given a set of points, calculates the farthest one following some direction in O(N*logN);
 
 *Gaussian_XOR.cpp* = Gaussian elimination in <img src="https://render.githubusercontent.com/render/math?math=\mathbb{Z}_{2}"> using XOR in <img src="https://render.githubusercontent.com/render/math?math=O(\frac{N^3}{64})">;\
 add - O(N²/64);\
