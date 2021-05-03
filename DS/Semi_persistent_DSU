@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+ 
+struct DSU{
+  int *arr;
+  int* link;
+  DSU(int n){
+    arr = new int[n];
+    link = new int[n];
+    for (int i=0;i<n;i++){
+       arr[i]=-1;
+       link[i]=INT_MAX;
+    }
+  }
+  int find(int a){
+    while(arr[a]>=0){
+      a=arr[a];
+    }
+    return a;
+  }
+
+  //finds the parent of a on time t;
+  int find_t(int a,int t){
+    if (arr[a]<0)return a;
+    if (link[a]>t)return a;
+    return find_t(arr[a],t);
+  }
+
+  void uniao(int a,int b,int tempo){
+    int paia=find(a);
+    int paib=find(b);
+    if (paia==paib)return;
+    int tamanho=arr[paia]+arr[paib];
+    if (arr[paia]<arr[paib])swap(paia,paib);
+    arr[paia]=paib;
+    arr[paib]=tamanho;
+    link[paia]=tempo;
+  }
+
+  int menor_tempo(int a,int b){
+    if (a==b)return 0;
+    if (find(a)!=find(b))return -1;
+    int mini=-1;
+    while(a!=b){
+      if (link[a]>link[b])swap(a,b);
+      mini=max(link[a],mini);
+      a=arr[a];
+      
+    }
+    return mini;
+  }
+};
+
+int main(){
+  
+  int n;
+  int m;
+  int q;
+  scanf("%d%d%d",&n,&m,&q);
+  DSU dsu =DSU(n+1);
+  int tempo=1;
+  while(m--){
+   // cout<<m<<endl;
+    int a,b;scanf("%d%d",&a,&b);
+    dsu.uniao(a,b,tempo++);
+    //cout<<m<<endl;
+
+  }
+
+  while(q--){
+    //cout<<q<<endl;
+    int a,b;scanf("%d%d",&a,&b);
+    printf("%d\n",dsu.menor_tempo(a,b));
+  }
+  
+}
