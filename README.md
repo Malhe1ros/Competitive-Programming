@@ -47,6 +47,13 @@ Union = O(1);\
 Find = O(1);\
 ~That's actually the inverse ackermann function but whatever~
 
+*Fenwick.cpp* = Normal fenwick tree (BIT);\
+*Fenwick2D.cpp* = 2D fenwick tree (BIT 2D);\
+*FenwickND.cpp* = N dimensional fenwick tree (BIT ND);\
+create = O(N) for BIT and O(N^d * log^d(N)) for N dimensional;\
+query = O(log^d(N)) for N dimensional;
+
+
 
 *LazySegTree.cpp* = Segment tree with lazy propagation;\
 Create = O(N);\
@@ -64,6 +71,13 @@ Rollback = O(1) [amortized];
 Create = O(N);\
 Query = O(logN);\
 Update = O(logN);
+
+*semi_persistent_DSU.cpp* = DSU that can acess its state on time t;\
+Create = O(N);\
+Find(now) = O(logN);\
+Find(time t) = O(logN);\
+Union = O(1);\
+Time A,B connected = O(logN);
 
 *Sparse_table.cpp* = Sparse table\
 Create = O(N\*logN);\
