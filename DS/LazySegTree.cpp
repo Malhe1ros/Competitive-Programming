@@ -1,83 +1,112 @@
 #include <bits/stdc++.h>
-
+#define int long long
 using namespace std;
-
 struct segtree{
-    vector<int> seg;
-    vector<int> lazy;
-    int size;
-    int neutro;
-    int lazyneutro;
-    int op(int a,int b){
-        return min(a,b);
+  int* arr;
+  int* lazy;
+  int size;
+  int neutro;
+  int lneutro;
+ 
+  int op(int a,int b){
+    return min(a,b);
+  }
+ 
+  int lazyop(int a,int b){
+    return a+b;
+  }
+ 
+  segtree(vector<int>&v,int neut,int lazyneut){
+    neutro=neut;
+    lneutro=lazyneut;
+    int n=v.size();
+    size=1;
+    while(size<n){
+      size*=2;
     }
-    int lazyop(int a,int b){
-        if (b==lazyneutro) return a;
-        return b;
+    arr = new int[2*size];
+    lazy = new int[2*size];
+    for (int i=0;i<2*size;i++){
+      lazy[i]=lneutro;
+      arr[i]=neutro;
     }
-    void propagate(int x,int lx,int rx){
-        if (rx-lx==1) return;
-        seg[2*x+1]=lazyop(seg[2*x+1],lazy[x]);
-        seg[2*x+2]=lazyop(seg[2*x+2],lazy[x]);
-        lazy[2*x+1]=lazyop(lazy[2*x+1],lazy[x]);
-        lazy[2*x+2]=lazyop(lazy[2*x+2],lazy[x]);
-
-        lazy[x]=lazyneutro;
+    build(v,0,0,size);
+  }
+  void build(vector<int>&v,int x,int l,int r){
+    if (r-l==1){
+      if (l<v.size()){
+        arr[x]=v[l];
+      }
+      return;
     }
-    segtree(vector<int>&v,int neu=0,int lazyneu=-1){
-        int n=1;
-        while(n<v.size()) n=n<<1;
-        seg.assign(2*n,neu);
-        lazy.assign(2*n,lazyneu);
-        size=n;
-        neutro=neu;
-        lazyneutro=lazyneu;
-        build(v,0,0,size);
+    int mid = l + (r-l)/2;
+    build(v,2*x+1,l,mid);
+    build(v,2*x+2,mid,r);
+    arr[x]=op(arr[2*x+1],arr[2*x+2]);
+  }
+  
+  void propagate(int x,int l,int r){
+    arr[x]=lazyop(arr[x],lazy[x]);
+    if(r-l==1){      
+      lazy[x]=lneutro;
+      return;
     }
-    void build(vector<int>& v,int x,int lx,int rx){
-        if (rx-lx==1){
-            if (lx<v.size()) seg[x]=v[lx];
-            return;
-        }
-        int mid = lx + (rx-lx)/2;
-        build(v,2*x+1,lx,mid);
-        build(v,2*x+2,mid,rx);
-        seg[x]=op(seg[2*x+1],seg[2*x+2]);
+    lazy[2*x+1]=lazyop(lazy[x],lazy[2*x+1]);
+    lazy[2*x+2]=lazyop(lazy[x],lazy[2*x+2]);
+    lazy[x]=lneutro;
+  }
+ 
+  void update(int v,int l,int r,int x,int lx,int rx){
+    propagate(x,lx,rx);
+    if (lx>=r || rx<=l)return;
+    if (lx>=l && rx<=r){
+      lazy[x]=lazyop(lazy[x],v);
+      propagate(x,lx,rx);
+      return;
     }
-
-    void rangeset(int l,int r,int valor,int x,int lx,int rx){
-        propagate(x,lx,rx);
-        if (r<=lx || l>=rx) return ;
-        if (lx>=l && rx<=r){
-             lazy[x]=lazyop(lazy[x],valor);
-             seg[x]=lazyop(seg[x],valor);
-             return;
-        }
-        int mid = lx+(rx-lx)/2;
-        rangeset(l,r,valor,2*x+1,lx,mid);
-        rangeset(l,r,valor,2*x+2,mid,rx);
-        seg[x]=op(seg[2*x+1],seg[2*x+2]);
-        seg[x]=lazyop(seg[x],lazy[x]);
+    int mid = lx + (rx-lx)/2;
+    update(v,l,r,2*x+1,lx,mid);
+    update(v,l,r,2*x+2,mid,rx);
+    arr[x]=op(arr[2*x+1],arr[2*x+2]);
+  }
+  void update(int l,int r,int v){
+    return update(v,l,r,0,0,size);
+  }
+ 
+  int query(int l,int r,int x,int lx,int rx){
+    propagate(x,lx,rx);
+    if (lx>=r || rx<=l)return neutro;
+    if (lx>=l && rx<=r){
+      return arr[x];
     }
-    void rangeset(int l,int r,int valor){
-        rangeset(l,r,valor,0,0,size);
-    }
-    int query(int l,int r,int x,int lx,int rx){
-        propagate(x,lx,rx);
-        if (r<=lx || l>=rx) return neutro;
-        if (lx>=l && rx<=r) return seg[x];
-        int mid = lx+(rx-lx)/2;
-        int resl=query(l,r,2*x+1,lx,mid);
-        int resr=query(l,r,2*x+2,mid,rx);
-        int res=op(resl,resr);
-        res=lazyop(res,lazy[x]);
-        return res;
-    }
-    
-    
-    
-    int query(int l,int r){
-        return query(l,r,0,0,size);
-    }
-
+    int mid = lx + (rx-lx)/2;
+    return op(query(l,r,2*x+1,lx,mid),query(l,r,2*x+2,mid,rx));
+  }
+ 
+  int query(int l,int r){
+    return query(l,r,0,0,size);
+  }
+ 
 };
+ 
+int32_t main(){
+  long long n,m;scanf("%lld %lld",&n,&m);
+  vector<long long> v(n,0);
+  segtree s= segtree(v,LLONG_MAX,0);
+  while(m--){
+      long long a;scanf("%lld",&a);
+      if (a==1){
+          long long b,c,d;
+          scanf("%lld %lld %lld",&b,&c,&d);
+        s.update(b,c,d);
+      }
+      else{
+          long long b,c;
+          scanf("%lld %lld",&b,&c);
+          printf("%lld\n",s.query(b,c));
+      }
+    
+          
+  }
+ 
+}
