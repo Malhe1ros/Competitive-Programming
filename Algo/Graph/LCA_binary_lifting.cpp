@@ -22,6 +22,8 @@ int jmp(int a,int j){
 }
 vector<int> grafo[maxn];
 int cont=0;
+
+//your usual predfs;
 int ddepth[maxn];
 void dfs(int i=1,int cont=0){
   ddepth[i]=cont;
@@ -29,9 +31,22 @@ void dfs(int i=1,int cont=0){
 }
 
 int lca(int a,int b){
+  /*
+  firstly i make them to go to the same ddepth, if they are equal return;
+  */
   if (ddepth[a]>ddepth[b]) swap(a,b);
   b=jmp(b,ddepth[b]-ddepth[a]);
   if (a==b) return a;
+  /*
+  if not equal i go up until they are equal,
+  the idea is to think of binary representation,
+  if the LCA is 5 ancestors away from me, it is 101 ancestors away from me (in binary)
+  So i will go, 2^(maxlog-1), 2^(maxlog-2)... 2^(2), 2^1, 2^0;
+  the first time they will be different is at 2^2 = 4, so we get 100 in binary and go up 4
+  after we went 4 up, we just need to go one more,
+  at 2 they will be equal (4+2 = 6 > 5)
+  at 1 they will be equal again, so the last place they are different is at 4, so the first place they will be equal is 5 ancestors up (the parent of 4);
+  */
   for (int i=maxlog-1;i>=0;i--){
     if (dp[a][i]!=dp[b][i]){
       a=dp[a][i];
