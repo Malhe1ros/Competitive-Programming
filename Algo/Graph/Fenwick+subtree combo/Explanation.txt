@@ -1,0 +1,50 @@
+I found this to be very interesting, https://codeforces.com/blog/entry/78564
+
+beg[] = array with the first time i entered it on the euler tour
+en[] = array with the time i left it on the euler tour
+
+There are two main ideas on these files:
+
+1. Sum a value on the WHOLE subtree
+  You can sum a value of the whole subtree by taking the euler tour and using a fenwick tree to do range sums in O(logN);
+  To sum the value v on the subtree rooted at X:
+    you update beg[X] to v;
+    you update en[X]+1 to -v;
+  To query the value of node Y:
+    you query beg[Y];
+  
+  This works because if the beg[y] is inside [beg[x],en[x]] means that y is in the subtree of node x
+  when we update beg[x] to v and update en[x]+1 to -v, we are adding v to ALL nodes that are in my subtree
+  
+2. Sum a value on a path;
+  This one is a bit trickier, we will use the euler tour + fenwick tree combo again;
+  This time we are trying to sum a value v on the whole path from X to Y;
+  To be easier to digest, let's think with partial sums, in node X we will store the value of the path from X to the root (the whole tree one);
+  Pause and ponder, if we magically can know the value of the path from X to the root and also easily update this value: 
+  
+  2.1 how would we find the value of the path from X to any Y?
+  2.2 how would we update the value of the path from X to any Y?
+  
+  To both of these questions we can use the LCA, 
+  2.1 To find the value of the path from X to Y, we just need to find the value of the path from X to LCA(X,Y) and from Y to LCA(X,Y)
+  Now both are guaranteed to be ancestors, and we can query the value from X to LCA(X,Y) by using partial sums:
+  The value of the path from X to LCA(X,Y) if the value from X to root MINUS the value from LCA(X,Y) to the root, the same idea will be used with Y.
+  
+  2.2 To update the value of the path from X to any Y: 
+      update the value of X to the root to v;
+      update the value of Y to the root to v;
+      update the value of LCA(X,Y) to the root to -2*v;
+  
+    
+  So now the update works like this:
+            f.update(beg[X],1);
+            f.update(beg[Y],1);
+            f.update(beg[LCA(X,Y)],-2);
+            
+  And the query works like this:
+            f.query(beg[X],en[X]);
+    
+  
+  Yes it is quite weird to get your head around this (at least that was my case)
+  Try drawing random trees and doing the algorithms and it will start to make a bit of sense;
+  
