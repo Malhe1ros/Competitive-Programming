@@ -5,7 +5,7 @@ en[] = array with the time i left it on the euler tour
 
 There are two main ideas on these files:
 
-1. Sum a value on the WHOLE subtree
+1. Sum a value on the WHOLE subtree [equivalent to range update and point query]
   You can sum a value of the whole subtree by taking the euler tour and using a fenwick tree to do range sums in O(logN);
   To sum the value v on the subtree rooted at X:
     you update beg[X] to v;
@@ -16,7 +16,7 @@ There are two main ideas on these files:
   This works because if the beg[y] is inside [beg[x],en[x]] means that y is in the subtree of node x
   when we update beg[x] to v and update en[x]+1 to -v, we are adding v to ALL nodes that are in my subtree
   
-2. Sum a value on a path;
+2. Sum a value on a path [equivalent to range query and point update]
   This one is a bit trickier, we will use the euler tour + fenwick tree combo again;
   This time we are trying to sum a value v on the whole path from X to Y;
   To be easier to digest, let's think with partial sums, in node X we will store the value of the path from X to the root (the whole tree one);
