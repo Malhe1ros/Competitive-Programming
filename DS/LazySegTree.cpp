@@ -46,7 +46,7 @@ struct segtree{
   }
   
   void propagate(int x,int l,int r){
-    arr[x]=lazyop(arr[x],lazy[x]);
+    arr[x]=lazyop(lazy[x],arr[x]);
     if(r-l==1){      
       lazy[x]=lneutro;
       return;
@@ -60,7 +60,7 @@ struct segtree{
     propagate(x,lx,rx);
     if (lx>=r || rx<=l)return;
     if (lx>=l && rx<=r){
-      lazy[x]=lazyop(lazy[x],v);
+      lazy[x]=lazyop(v,lazy[x]);
       propagate(x,lx,rx);
       return;
     }
