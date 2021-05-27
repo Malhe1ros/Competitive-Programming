@@ -4,6 +4,8 @@ using namespace std;
  
 #define ld long double
 
+//solves https://www.spoj.com/problems/GS/
+
 const int maxn=(int)20;
 ld a[maxn][maxn];
 //black box to calculate the gaussian elimination;
