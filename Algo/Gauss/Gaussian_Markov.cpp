@@ -5,10 +5,15 @@ using namespace std;
 #define ld long double
 
 //solves https://www.spoj.com/problems/GS/
+/*
+	This algorithm solves problems involving cyclic expectation, you can solve using markov chains in O(C*V^3), iterating all over a high C constant and aproximating the expected value
+	But you can also solve it in O(V^3) converting it into a system of equations and solving with gaussian elimination;
+	The trick is explained down below
+*/
 
 const int maxn=(int)20;
 ld a[maxn][maxn];
-//black box to calculate the gaussian elimination;
+//black box to gaussian eliminate (i don't know if it is a valid sentence but looks cool lol);
 //in mx we have the matrix + in the last column the value of answer
 vector<ld> gauss(const vector< vector<ld> > mx)
 {	
@@ -74,14 +79,7 @@ vector<ld> gauss(const vector< vector<ld> > mx)
 	return ret;
 }
  
-void printv(vector<vector<ld>> teste){
-    for (auto k:teste){
-        for (auto k1:k){
-            cout<<k1<<" ";
-        }
-        cout<<endl;
-    }
-}
+
 
 int main(){
     cin.tie(NULL);
