@@ -3,6 +3,8 @@
 #define int long long
 
 using namespace std;
+
+// solves https://cses.fi/problemset/result/2248421/
 /*
     Create = O(N);
     Update = O(1);
