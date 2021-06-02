@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-    
+// COMPILE WITH g++ d.cpp -w -o d    
 using namespace std;
 
 #define ld long double
@@ -20,7 +20,6 @@ using namespace std;
 
 
 typedef pair<int,int> PII;
-
 
 //DEBBUGGING STUFF, JUST USE deb(a,b,c) and it will print the variables;
 #define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
