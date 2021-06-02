@@ -17,7 +17,8 @@ using namespace std;
 #define RFOR(i, j, k, int) for (int i=j;i>=k;i-=in)
 #define REP(i, j) for (int i=0;i<j;i++)
 #define RREP(i, j) for (int i=j;i>=0;i--)
-
+#define GO cin.tie(NULL);
+#define FAST ios_base::sync_with_stdio(false);
 
 typedef pair<int,int> PII;
 
@@ -32,5 +33,5 @@ void logger(string vars, Args&&... values) {
 }
 
 int main(){
-   
+    GO FAST
 }
