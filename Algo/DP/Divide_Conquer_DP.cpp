@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
  
 using namespace std;
+//solves https://www.spoj.com/problems/ADAMOLD/
 #define int long long 
 #define ld long double
 #define ll long long
