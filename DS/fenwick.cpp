@@ -8,6 +8,10 @@ struct fenwick{
 
     ll* arr;
     int size;
+	fenwick(int n){
+		int size=n;
+		arr=new ll[n+1];
+	}
     fenwick(vector<int>& v){
         int n=v.size();
         arr = new ll[n+1];
