@@ -201,6 +201,8 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 	segtree<ll> tree;//my segtree
 
   //black magic of some sort
+  //YOU HAVE TO ADD THE VALS_IN_EDGE STUFF PLEASE REMEMBER
+  /*
 	template <class BinaryOp>
 	void processPath(int x, int y, BinaryOp op) {
 		for (; root[x] != root[y]; y = par[root[y]]) {
@@ -208,28 +210,45 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 			op(pos[root[y]],pos[y]); }
 		if (ddepth[x] > ddepth[y]) swap(x,y);
 		op(pos[x]+VALS_IN_EDGES,pos[y]); 
-	}
+	}*/
+
 	void modifyPath(int x, int y, int v) { 
-		processPath(x,y,[this,&v](int l, int r) { 
-			tree.update(l,r+1,v); }); }
+    if(root[x]==root[y]){
+      if(pos[x]>pos[y])swap(x,y);
+      tree.update(pos[x],pos[y]+1,v);
+      return;
+    }
+    if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
+    int a=x;
+    int b=root[x];
+    if(pos[a]>pos[b])swap(a,b);
+    tree.update(pos[a],pos[b]+1,v);
+    modifyPath(par[root[x]],y,v);
+    }
 	
   ll queryPath(int x, int y) { 
-		ll res = 0; processPath(x,y,[this,&res](int l, int r) { 
-			res = max(tree.query(l,r+1),res); });
-		return res; }
+    if(root[x]==root[y]){
+      if(pos[x]>pos[y])swap(x,y);
+      
+      return tree.query(pos[x],pos[y]+1);
+    }
+    if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
+    int a=x;
+    int b=root[x];
+    if(pos[a]>pos[b])swap(a,b);
+    return tree.op(queryPath(par[root[x]],y),tree.query(pos[a],pos[b]+1));
+
+  }
 
 	void modifySubtree(int x, int v) { 
-		tree.update(pos[x]+VALS_IN_EDGES,pos[x]+sz[x]-1,v); }
+		tree.update(pos[x]+VALS_IN_EDGES,pos[x]+sz[x],v); 
+    }
 
-
-  //use this function;
-  ll query(int b,int c){
-    return max(queryPath(b,lca(b,c)),queryPath(c,lca(b,c)));
-  }
 
    
 };
 int main(){
+  
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
 
@@ -258,7 +277,7 @@ int main(){
         }
         else{
             b--;c--;
-            cout<<hld.query(b,c)<<" ";
+            cout<<hld.queryPath(b,c)<<" ";
         }
         
 
