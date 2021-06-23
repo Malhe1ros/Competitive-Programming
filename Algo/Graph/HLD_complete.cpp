@@ -4,6 +4,12 @@
 #define ll int 
 using namespace std;
 
+/*
+  Heavy light decomposition on steroids;
+  Uses a lazy propagation segment tree to update and query paths;
+*/
+
+
 struct n1d{
 	int x;
 	n1d(int a){
@@ -14,6 +20,8 @@ struct n1d{
 	}
 };
 
+
+//Normal lazy segtree, see other documentation (if exists)
 template <class nd>
 struct segtree{
   nd* arr;
@@ -120,15 +128,24 @@ struct segtree{
  
 };
 
-const int SZ=2e5+10;
+const int SZ=2e5+10;//maxn
 
 
+//HLD<size,is the value on edges?>
 template<int SZ, bool VALS_IN_EDGES> struct HLD { 
-	int N; vector<int> adj[SZ];
-	int par[SZ], root[SZ], depth[SZ], sz[SZ], ti;
-	int pos[SZ]; vector<int> rpos; // rpos not used, but could be useful
-  int heavy[SZ];
-	void ae(int x, int y) { adj[x].push_back(y), adj[y].push_back(x); }
+	int N;//HLD size 
+  vector<int> adj[SZ];//adjacency list
+	int par[SZ];//par[i] has the parent of i;
+  int root[SZ];//root[i] has the root of the path which contains i
+  int ddepth[SZ];//ddepth[i] has the depth of i
+  int sz[SZ];//sz[i] has the size of subtree rooted on i;
+  int ti;//for the euler tour stuff;
+	int pos[SZ];//pos in segtree
+  vector<int> rpos; // rpos gambiarra;
+  int heavy[SZ];//heavy[i] has the heavy child of node i 
+	void addEdge(int x, int y) { adj[x].push_back(y), adj[y].push_back(x); }//adds edges from x to y
+
+  //normal dfs, it works, don't bother
 	void dfs(int u,int p) { 
 		sz[u] = 1; 
     int maior=-1;
@@ -136,7 +153,7 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
     par[u]=p;
 		for (auto k :adj[u]) {
       if(k==p)continue;
-			 depth[k] = depth[u]+1;
+			 ddepth[k] = ddepth[u]+1;
 			dfs(k,u); 
       sz[u] += sz[k];
 			if (sz[k] > maior) {
@@ -146,6 +163,8 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 		}
     heavy[u]=quem;
 	}
+
+  //hld dfs, it works, don't bother
 	void dfsHld(int x,int rr) {
 		pos[x] = ti++; rpos.push_back(x);
     root[x]=rr;
@@ -156,47 +175,65 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 			dfsHld(y,y); 
       }
 	}
-	void init(int _N, int R = 0) { 
-        tree=segtree<ll>(SZ,0LL,0LL);
-        N = _N; 
-      
-    par[R]=0;
-    depth[R]=0;
+
+  //initialize hld with values;
+	void init(vector<int>& valor,int R=0) { 
+    N = valor.size();   
+    par[R]=-1;
+    ddepth[R]=0;
     ti = 0; 
     dfs(R,-1);
       
 		dfsHld(R,R); 
-        
+    vector<int>v(N);
+    for(int i=0;i<N;i++){
+      v[i]=valor[rpos[i]];
+    }
+    tree=segtree<ll>(v,0,0);   
 	}
+
+  //lowest common ancestor with black magic;
 	int lca(int x, int y) {
 		for (; root[x] != root[y]; y = par[root[y]])
-			if (depth[root[x]] > depth[root[y]]) swap(x,y);
-		return depth[x] < depth[y] ? x : y;
+			if (ddepth[root[x]] > ddepth[root[y]]) swap(x,y);
+		return ddepth[x] < ddepth[y] ? x : y;
 	}
-	segtree<ll> tree;
+	segtree<ll> tree;//my segtree
+
+  //black magic of some sort
 	template <class BinaryOp>
 	void processPath(int x, int y, BinaryOp op) {
 		for (; root[x] != root[y]; y = par[root[y]]) {
-			if (depth[root[x]] > depth[root[y]]) swap(x,y);
+			if (ddepth[root[x]] > ddepth[root[y]]) swap(x,y);
 			op(pos[root[y]],pos[y]); }
-		if (depth[x] > depth[y]) swap(x,y);
+		if (ddepth[x] > ddepth[y]) swap(x,y);
 		op(pos[x]+VALS_IN_EDGES,pos[y]); 
 	}
 	void modifyPath(int x, int y, int v) { 
 		processPath(x,y,[this,&v](int l, int r) { 
 			tree.update(l,r+1,v); }); }
-	ll queryPath(int x, int y) { 
+	
+  ll queryPath(int x, int y) { 
 		ll res = 0; processPath(x,y,[this,&res](int l, int r) { 
 			res = max(tree.query(l,r+1),res); });
 		return res; }
+
 	void modifySubtree(int x, int v) { 
 		tree.update(pos[x]+VALS_IN_EDGES,pos[x]+sz[x]-1,v); }
+
+
+  //use this function;
+  ll query(int b,int c){
+    return max(queryPath(b,lca(b,c)),queryPath(c,lca(b,c)));
+  }
 
    
 };
 int main(){
     cin.tie(NULL);
     ios_base::sync_with_stdio(false);
+
+
     int n,q;cin>>n>>q;
 
     HLD<SZ,false> hld;
@@ -209,13 +246,10 @@ int main(){
     for(int i=0;i<n-1;i++){
         int a,b;cin>>a>>b;
         a--;b--;
-        hld.ae(a,b);
+        hld.addEdge(a,b);
     }
-    hld.init(n,0);
-    
-    for(int i=0;i<n;i++){
-        hld.modifyPath(i,i,valor[i]);
-    }
+    hld.init(valor,0);
+
     while(q--){
         int a,b,c;cin>>a>>b>>c;
         if (a==1){
@@ -224,11 +258,11 @@ int main(){
         }
         else{
             b--;c--;
-            cout<<max(hld.queryPath(b,hld.lca(b,c)),hld.queryPath(c,hld.lca(b,c)))<<" ";
+            cout<<hld.query(b,c)<<" ";
         }
         
- 
-    }
-    cout<<'\n';
 
+    }
+
+  cout<<endl;    
 }
