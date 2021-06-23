@@ -215,7 +215,7 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 	void modifyPath(int x, int y, int v) { 
     if(root[x]==root[y]){
       if(pos[x]>pos[y])swap(x,y);
-      tree.update(pos[x],pos[y]+1,v);
+      tree.update(pos[x]+VALS_IN_EDGES,pos[y]+1,v);
       return;
     }
     if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
@@ -230,7 +230,7 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
     if(root[x]==root[y]){
       if(pos[x]>pos[y])swap(x,y);
       
-      return tree.query(pos[x],pos[y]+1);
+      return tree.query(pos[x]+VALS_IN_EDGES,pos[y]+1);
     }
     if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
     int a=x;
