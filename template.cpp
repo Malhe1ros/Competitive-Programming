@@ -18,11 +18,11 @@ using namespace std;
 #define GO cin.tie(NULL);
 #define FAST ios_base::sync_with_stdio(false);
 typedef pair<int,int> pii;
+typedef vector<int> VI;
+typedef vector<pii> VPII;
  
  
  
-// Your function
-//DEBBUGGING STUFF, JUST USE deb(a,b,c) and it will print the variables;
 #define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
 template<typename ...Args>
 void logger(string vars, Args&&... values) {
