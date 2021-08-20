@@ -20,7 +20,7 @@ void precalc(){
 struct StringHash{
     vector<int> hsh;
     //REMEMBER TO RUN PRECALC
-    Stringhsh(string& _s){
+    StringHash(string& _s){
         hsh=vector<int>(_s.length()+1,0);
         for (int i=0;i<_s.length();i++){
             hsh[i+1]=((hsh[i]*base)%MOD + _s[i])%MOD;
