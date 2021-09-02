@@ -35,7 +35,7 @@ ll calc(int bitmask){
 
 }
 
-ll solve(int bitmask){
+ll solve(int bitmask){//ISSO É ITERANDO SOBRE SUBMASK
     if (dp[bitmask]!=-1) return dp[bitmask];
     dp[bitmask]=calc(bitmask);
     for (int s=bitmask; s; s=(s-1)&bitmask){// THIS IS THE IMPORTANT BIT MAGIC PART
