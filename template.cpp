@@ -42,7 +42,7 @@ void logger(string vars, Args&&... values) {
     cout<<endl;
 }
 
-void print(vector<int>&v){
+void print(vector<int>v){
 	cout<<"[";
 	FOR(i,v.size()){
 		cout<<v[i];
@@ -51,7 +51,7 @@ void print(vector<int>&v){
 	cout<<"]"<<endl;
 }
 
-void print(pii & p){
+void print(pii p){
 	cout<<"{"<<p.first<<", "<<p.second<<"}"<<endl;
 }
  
