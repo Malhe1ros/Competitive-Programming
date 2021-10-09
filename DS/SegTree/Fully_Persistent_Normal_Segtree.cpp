@@ -25,7 +25,7 @@ struct node{
 
 template<int MAXN>
 struct persistentSegtree{
-  node segtree[64*MAXN];//array to store segtree
+  node segtree[64*MAXN];//array to store segtree 25*MAXN works well for 3e5
   int tempos[MAXN];//array to store the index of the parent at time t;
   int tempoatual=0;//position i will add the next time
   int neutro;//neutral element of op
