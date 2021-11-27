@@ -1,126 +1,114 @@
 #include <bits/stdc++.h>
-#pragma GCC optimize("O3")
-#define FOR(i, x, y) for (int i = x; i < y; i++)
-#define MOD 1000000007
-#define MAXV 123456
-typedef long long ll;
+ 
 using namespace std;
 
+#define int long long
 
-template<int MAXN>
-struct ImplicitSegtree{
-  static const int LAZY_NEUTRAL = -1;
-  struct Node {
-   int val, lazy; // val and lazy values
-    int tl, tr; // left and right range
-    int l, r; // left and right childs ids
-   Node() : val(0), lazy(LAZY_NEUTRAL), l(-1), r(-1) {}
-  };
+struct Node{
+    int l,r,val,lazy;
+    Node(){
 
-  Node segtree[64 * MAXN];
-  int nodeCount = 2;
-
-
-  int merge(int a, int b){
-    return a + b;
-  }
-
-  void createChild(int parentNode, int childTl, int childTr, bool isLeft){
-    int newNode = getNextId();
-    if(isLeft) segtree[parentNode].l = newNode;
-    else segtree[parentNode].r = newNode;
-    segtree[newNode].tl = childTl;
-    segtree[newNode].tr = childTr;
-  }
-
-  void maybeCreateChilds(int node){
-    int mid = (segtree[node].tl + segtree[node].tr) / 2;
-    if (segtree[node].l == -1) {
-      createChild(node, segtree[node].tl, mid, true);
     }
-    if (segtree[node].r == -1) {
-      createChild(node, mid + 1, segtree[node].tr, false);
+    Node(int a,int b,int c,int d){
+        l=a;
+        r=b;
+        val=c;
+        lazy=d;
     }
-  }
-
-  inline int getNextId(){ return nodeCount++; }
-
-  ImplicitSegtree(){
-    segtree[1].val = 0; segtree[1].lazy = -1;
-    segtree[1].tl = 1; segtree[1].tr = 1e9;
-    // LAZY_NEUTRAL = -1;
-  }
-
-  void push_lazy(int node) {
-   if (segtree[node].lazy != LAZY_NEUTRAL) {
-    segtree[node].val = segtree[node].lazy;
-      maybeCreateChilds(node);
-    segtree[segtree[node].l].lazy = segtree[segtree[node].l].tr - segtree[segtree[node].l].tl + 1;
-      segtree[segtree[node].r].lazy = segtree[segtree[node].r].tr - segtree[segtree[node].r].tl + 1;
-    segtree[node].lazy = LAZY_NEUTRAL;
-   }
-  }
-
-  void update(int node, int l, int r, int value) {
-   push_lazy(node);
-   if (l == segtree[node].tl && r == segtree[node].tr) {
-    segtree[node].lazy = (segtree[node].tr - segtree[node].tl + 1) * value;
-    push_lazy(node);
-   } else {
-      maybeCreateChilds(node);
-
-      int mid = (segtree[node].tl + segtree[node].tr) / 2;
-    if (l > mid) update(segtree[node].r, l, r, value);
-    else if (r <= mid) update(segtree[node].l, l, r, value);
-    else {
-     update(segtree[node].l, l, mid, value);
-     update(segtree[node].r, mid + 1, r, value);
-    }
-
-    push_lazy(segtree[node].l);
-    push_lazy(segtree[node].r);
-    segtree[node].val = merge(
-        segtree[segtree[node].l].val,
-        segtree[segtree[node].r].val
-      );
-   }
-  }
-
-  int query(int node, int l, int r) {
-   push_lazy(node);
-   if (l == segtree[node].tl && r == segtree[node].tr)
-      return segtree[node].val;
-   else {
-    int mid = (segtree[node].tl + segtree[node].tr) / 2;
-      maybeCreateChilds(node);
-
-    if (l > mid) return query(segtree[node].r, l, r);
-    else if (r <= mid) return query(segtree[node].l, l, r);
-    else return merge(
-        query(segtree[node].l, l, mid),
-        query(segtree[node].r, mid + 1, r)
-      );
-   }
-  }
 };
 
-ImplicitSegtree<MAXV> st;
-int main() {
- iostream::sync_with_stdio(false);
- cin.tie(0);
- int m;
- cin >> m;
+
+const int maxn=1e9+10;
+template<int MAXV>
+struct ImplicitSegTree{
+    Node segtree[64*MAXV];//to store my implicit segtree
+    int index=0;//which indice am i looking?
+    const int beg=0;
+    const int en=maxn;//[beg,en[ is the range of my segtree;
+    int lazyneutro;//this value means there is no lazy to be pushed;
+    int neutro;//this value is the neutral element of op operation
+
+    ImplicitSegTree(int neu,int lneutro){
+        lazyneutro=lneutro;
+        neutro=neu;
+        segtree[index]=Node(-1,-1,0,lazyneutro);//begin with all zeros;
+        index++;
+    }
+
+    int lazyop(int a,int b){//will be used to lazy update;
+        return a+b;
+    }
+
+    int op(int a,int b){//will be used to range query;
+        return max(a,b);
+    }
+
+    void applylazyatnode(int u,int l,int r){//will be used to apply the lazy update at the node;
+        segtree[u].val=lazyop(segtree[u].val,segtree[u].lazy);
+        segtree[u].lazy=lazyneutro;
+    }
+
+    void createchilds(int u){
+        if (segtree[u].l==-1){
+            segtree[u].l=index;
+            segtree[index]=Node(-1,-1,0,lazyneutro);
+            index++;
+        }
+        if (segtree[u].r==-1){
+            segtree[u].r=index;
+            segtree[index]=Node(-1,-1,0,lazyneutro);
+            index++;
+        }
+    }
+
+    void pushlazy(int u,int l,int r){
+        if ((r-l)!=1){//if i am not at a leaf
+            createchilds(u);
+            segtree[segtree[u].l].lazy=lazyop(segtree[u].lazy,segtree[segtree[u].l].lazy);
+            segtree[segtree[u].r].lazy=lazyop(segtree[u].lazy,segtree[segtree[u].r].lazy);
+        }
+        
+        if(segtree[u].lazy!=lazyneutro) applylazyatnode(u,l,r);
+        
+    }
+
+    int query(int x,int lx,int rx,int l,int r){
+        pushlazy(x,lx,rx);
+        if (l<=lx && rx<=r){
+            return segtree[x].val;
+        }
+        if (lx>=r || rx<=l)return neutro;
+
+        int mid=lx+(rx-lx)/2;
+        return op(query(segtree[x].l,lx,mid,l,r),query(segtree[x].r,mid,rx,l,r));
+
+    }
+
+    //[l,r[
+    int query(int l,int r){
+        return query(0,beg,en,l,r);
+    }
+
+    void update(int x,int lx,int rx,int l,int r,int val){
+        pushlazy(x,lx,rx);
+        if (lx>=r || rx<=l)return;
+        if (lx>=l && rx<=r){
+            segtree[x].lazy=lazyop(val,segtree[x].lazy);
+            pushlazy(x,lx,rx);
+            return;
+        }
+        int mid = lx+(rx-lx)/2;
+        update(segtree[x].l,lx,mid,l,r,val);
+        update(segtree[x].r,mid,rx,l,r,val);
+        segtree[x].val=op(segtree[segtree[x].l].val,segtree[segtree[x].r].val);
+    }
+    void update(int l,int r,int val){
+        update(0,beg,en,l,r,val);
+    }
+    
+};
+
+signed main(){
 
 
-
- int c = 0;
- FOR(_, 0, m) {
-  int d, x, y;
-  cin >> d >> x >> y;
-  if (d == 1) {
-   c = st.query(1, x + c, y + c);
-   cout << c << '\n';
-  } else st.update(1, x + c, y + c, 1);
- }
- return 0;
 }
