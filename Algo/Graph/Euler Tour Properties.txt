@@ -1,0 +1,7 @@
+Euler tour properties:
+
+1. beg[u] to en[u] is the subtree of u;
+
+2. from beg[u] to 0, the elements which only beg[x] appear, are in the path from u to the root;
+
+3. from en[a] to beg[b] (en[a]<beg[b]) the elements which appear only once (only beg[x] or en[x] appear), are in the path from a to b (LCA not included);
