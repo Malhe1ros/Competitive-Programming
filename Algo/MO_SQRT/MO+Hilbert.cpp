@@ -35,7 +35,7 @@ struct Query {
 vector<int> v;
  
 int l=0;
-int r=0;//i have the answer calculated from l to r;
+int r=-1;//i have the answer calculated from l to r;
 int pref[MAXN];
 int resp=0;
 unordered_map<int,int> cnt;
@@ -100,7 +100,6 @@ signed main(){
   sort(qs.begin(), qs.end(), [&](Query &a, Query &b){return a.ord < b.ord;});
   vector<int> ans(q);
 
-  cnt[0]=1;
   for(auto q : qs){
     // first expand range
     while(r < q.r) walkRRight();
