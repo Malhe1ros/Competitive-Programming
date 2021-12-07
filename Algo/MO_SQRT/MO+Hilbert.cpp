@@ -1,13 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
- 
-#define LOG_MAXN 19
+
+#define int long long
+#define LOG_MAXN 20
 #define MAXN 1000010
 
-//solves https://codeforces.com/contest/86/problem/D
-//written by pauloamed
+//solves https://codeforces.com/contest/877/problem/F
 
-inline int64_t gilbertOrder(int x, int y, int pow, int rotate) {
+inline int64_t HilbertOrder(int x, int y, int pow, int rotate) {
 	if (pow == 0) return 0;
 	int hpow = 1 << (pow-1);
 	int seg = (x < hpow) ? ((y < hpow) ? 0 : 3) : ((y < hpow) ? 1 : 2);
@@ -17,78 +17,98 @@ inline int64_t gilbertOrder(int x, int y, int pow, int rotate) {
 	int nrot = (rotate + rotateDelta[seg]) & 3;
 	int64_t subSquareSize = int64_t(1) << (2*pow - 2);
 	int64_t ans = seg * subSquareSize;
-	int64_t add = gilbertOrder(nx, ny, pow-1, nrot);
+	int64_t add = HilbertOrder(nx, ny, pow-1, nrot);
 	ans += (seg == 1 || seg == 2) ? add : (subSquareSize - add - 1);
 	return ans;
 }
  
 struct Query {
-	int l, r, idx; // 1 indexado
+	int l, r, idx; 
 	int64_t ord;
  
 	inline void calcOrder() {
-		ord = gilbertOrder(l, r, LOG_MAXN, 0);
+		ord = HilbertOrder(l, r, LOG_MAXN, 0);
 	}
 };
  
-#define ll long long
-ll curr;
+
 vector<int> v;
-int cnt[MAXN];
  
-int walkRLeft(int r){
-  // estou tirando o v[r]
-  ll x = 2 * (cnt[v[r]]--) - 1;
-  curr -= x * v[r];
-  return r - 1;
+int l=0;
+int r=0;//i have the answer calculated from l to r;
+int pref[MAXN];
+int resp=0;
+unordered_map<int,int> cnt;
+int k;
+void walkRLeft(){//removing r;
+  cnt[pref[r]]--;
+  resp-=cnt[pref[r]-k];
+  
+  r--;
 }
  
-int walkRRight(int r){
-  // estou adicionando v[r + 1]
-  ll x = 2 * (cnt[v[++r]]++) + 1;
-  curr += x * v[r];
-  return r;
+void walkRRight(){//adding r;
+  r++;
+  resp+=cnt[pref[r]-k];
+  cnt[pref[r]]++;
+
 }
  
-int walkLLeft(int l){
-  // estou adicionando v[l - 1]
-  ll x = 2 * (cnt[v[--l]]++) + 1;
-  curr += x * v[l];
-  return l;
+void walkLLeft(){//adding l;
+  l--;
+  resp+=cnt[pref[l]+k];
+  cnt[pref[l]]++;
+
 }
  
-int walkLRight(int l){
-  // estou tirando o v[l]
-  ll x = 2 * (cnt[v[l]]--) - 1;
-  curr -= x * v[l];
-  return l + 1;
+void walkLRight(){//removing l;
+  cnt[pref[l]]--;
+  resp-=cnt[pref[l]+k];
+  
+  l++;
 }
  
  
  
-int main(){
+signed main(){
   iostream::sync_with_stdio(false);
   cin.tie(NULL);
-  int n, q; cin >> n >> q; v = vector<int>(n); for(auto &x : v) cin >> x;
+  int n; cin >> n>>k;
+   v = vector<int>(n); 
+   vector<int>quem=vector<int>(n);
+   
+   for(auto &x : quem) cin >> x;
+   for(auto &x : v)cin>>x;
+   for(int i=0;i<n;i++){
+     if (quem[i]==1){
+       pref[i+1]=pref[i]+v[i];
+     }
+     else{
+        pref[i+1]=pref[i]-v[i];
+     }
+   }
+  
+  
+  int q;cin>>q;
   vector<Query> qs(q);
   for(int i = 0; i < q; ++i){
     cin >> qs[i].l >> qs[i].r;
+    qs[i].l--;
     qs[i].idx = i;
     qs[i].calcOrder();
   }
   sort(qs.begin(), qs.end(), [&](Query &a, Query &b){return a.ord < b.ord;});
-  vector<ll> ans(q);
-  int lastL = 0, lastR = 0;
-  curr = v[0]; cnt[v[0]]++;
+  vector<int> ans(q);
+
+  cnt[0]=1;
   for(auto q : qs){
-    q.l--; q.r--;
     // first expand range
-    while(lastR < q.r) lastR = walkRRight(lastR);
-    while(lastL > q.l) lastL = walkLLeft(lastL);
+    while(r < q.r) walkRRight();
+    while(l > q.l) walkLLeft();
     // then restrict
-    while(lastR > q.r) lastR = walkRLeft(lastR);
-    while(lastL < q.l) lastL = walkLRight(lastL);
-    ans[q.idx] = curr;
+    while(r > q.r) walkRLeft();
+    while(l < q.l) walkLRight();
+    ans[q.idx] = resp;
   }
   for(auto x : ans) cout << x << "\n";
 }
