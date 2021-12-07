@@ -68,7 +68,6 @@ void print(pii p){
 #define LOG_MAXN 20
 #define MAXN 1000010
 
-//solves https://codeforces.com/contest/877/problem/F
 
 inline int64_t HilbertOrder(int x, int y, int pow, int rotate) {
 	if (pow == 0) return 0;
@@ -110,7 +109,7 @@ gp_hash_table<int,int,chash> occ;
 gp_hash_table<int,int,chash> quem;
 int dist=0;
 void walkRLeft(){//removing r;
-  //occ[cor[r]]--;
+
   quem[euler[r]]--;
   if (quem[euler[r]]&1){
     occ[cor[euler[r]]]++;
@@ -136,14 +135,12 @@ void walkRRight(){//adding r;
     occ[cor[euler[r]]]--;
     if(occ[cor[euler[r]]]==0)resp--;
   }
-  //resp+=cnt[pref[r]-k];
-  //cnt[pref[r]]++;
+
 
 }
  
 void walkLLeft(){//adding l;
   l--;
-  //occ[cor[l]]++;
   quem[euler[l]]++;
   if(quem[euler[l]]&1){
     occ[cor[euler[l]]]++;
@@ -154,15 +151,11 @@ void walkLLeft(){//adding l;
     if(occ[cor[euler[l]]]==0)resp--;
   }
   
-  //resp+=cnt[pref[l]+k];
-  //cnt[pref[l]]++;
 
 }
  
 void walkLRight(){//removing l;
-  //cnt[pref[l]]--;
-  //resp-=cnt[pref[l]+k];
-  //occ[cor[l]]--;
+
   quem[euler[l]]--;
   if(quem[euler[l]]&1){
     occ[cor[euler[l]]]++;
@@ -196,7 +189,6 @@ void dfs(int u,int p,int d=0){
 }
 
 int jmp(int a,int j){
-  // dou um bit shift de i, se eu tenho que subir 2^i eu subo 2^i;
   for (int i=0;i<maxlog;i++) if ((j>>i) & 1) {
     a=dp[a][i];
   }
@@ -204,22 +196,11 @@ int jmp(int a,int j){
 }
 
 int lca(int a,int b){
-  /*
-  firstly i make them to go to the same ddepth, if they are equal return;
-  */
+
   if (ddepth[a]>ddepth[b]) swap(a,b);
   b=jmp(b,ddepth[b]-ddepth[a]);
   if (a==b) return a;
-  /*
-  if not equal i go up until they are equal,
-  the idea is to think of binary representation,
-  if the LCA is 5 ancestors away from me, it is 101 ancestors away from me (in binary)
-  So i will go, 2^(maxlog-1), 2^(maxlog-2)... 2^(2), 2^1, 2^0;
-  the first time they will be different is at 2^2 = 4, so we get 100 in binary and go up 4
-  after we went 4 up, we just need to go one more,
-  at 2 they will be equal (4+2 = 6 > 5)
-  at 1 they will be equal again, so the last place they are different is at 4, so the first place they will be equal is 5 ancestors up (the parent of 4);
-  */
+
   for (int i=maxlog-1;i>=0;i--){
     if (dp[a][i]!=dp[b][i]){
       a=dp[a][i];
@@ -228,6 +209,12 @@ int lca(int a,int b){
   }
   return dp[a][0];
 }
+/*
+ MO on tree to get how many distinct on a path from u to v;
+ To query from u to v is the same as a range query from en[u] to beg[v];
+ Just check how many of the nodes on the euler tour only appear once, and get how many distinct between them
+ Plus, just add the lca manually,as it will not be included in the range query;
+*/
  
 signed main(){
   iostream::sync_with_stdio(false);
