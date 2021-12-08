@@ -10,7 +10,7 @@ using namespace std;
 const int maxn=2e5+10;
 const int maxlog=31;
 
-int dp[maxn][maxlog]
+int dp[maxn][maxlog];
 
 //quem eh o j ancestral de a em O(logN)
 int jmp(int a,int j){
