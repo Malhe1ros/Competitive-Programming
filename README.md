@@ -1,4 +1,8 @@
 # Competitive-Programming
+# [OUTDATED]:
+# I changed a lot of stuff,
+# Now comments about complexity and functionalities are on the files;
+
 Algorithms and data structures for competitive programming
 
 I am trying to make this lib more "others-friendly" adding "How to use" documentations as some of the algorithms and data structures only i (or past i) knows what is going on the code;
