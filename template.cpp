@@ -17,6 +17,7 @@ using namespace std;
 #define RFOR(i, j) for (int i=j;i>=0;i--)
 #define GO cin.tie(NULL);
 #define FAST ios_base::sync_with_stdio(false);
+#define AE cout<<"ae"<<endl;
 #define prec(x) cout << fixed << setprecision(x)
 #define sz(x) (int)x.size()
 
@@ -44,9 +45,9 @@ void logger(string vars, Args&&... values) {
 
 void print(vector<int>v){
 	cout<<"[";
-	FOR(i,v.size()){
+	FOR(i,sz(v)){
 		cout<<v[i];
-		if(i+1!=v.size())cout<<", ";
+		if(i+1!=sz(v))cout<<", ";
 	}
 	cout<<"]"<<endl;
 }
