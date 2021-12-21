@@ -1,5 +1,17 @@
-  
 #include <bits/stdc++.h>
+
+/*
+    There are two main algorithms in this code
+    1. Multipoint evaluation:
+        Evaluates the values of multiple points in Nlog^2N
+        Given f and x0,x1,x2,x3...
+        Returns f(x0),f(x1),f(x2)...
+
+    2. Polynomial interpolation:
+        Returns the coefficients of the interpolation in less than N^2
+
+    There is a lot of other crazy stuff, such as sqrt of a polynomial,log, etc.
+*/
 
 using namespace std;
 using uint = unsigned int;
@@ -315,5 +327,45 @@ template <class Mint> struct InterPol {
 };
 
 int main() {
+    /* Multipoint evaluation in O(N*log^2(N))
+        int n, m;
+        scanf("%d %d", &n, &m);    
+        V<Mint> c(n), p(m);
+        for (int i = 0; i < n; i++) cin >> c[i].v;
+        for (int i = 0; i < m; i++) cin >> p[i].v;
 
+        auto pol = Poly<Mint>(c);
+        auto multi_eval = MultiEval<Mint>(p);
+
+        auto answer = multi_eval.query(pol);
+
+        for (int i = 0; i < m; i++) {
+            printf("%d", answer[i].v);
+            if (i + 1 != m) printf(" ");
+        }
+        printf("\n");
+        return 0;
+    */
+   /* Polynomial interpolation in O(N*log^3(N)) -Not really sure but probably-
+    int n;
+    scanf("%d", &n);
+    V<Mint> x(n), y(n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x[i].v);
+    }
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &y[i].v);
+    }
+
+    auto pol = InterPol<Mint>(x).query(y);
+
+    //assert(MultiEval<Mint>(x).query(pol) == y);
+
+    for (int i = 0; i < n; i++) {
+        printf("%d", pol.freq(i).v);
+        if (i + 1 != n) printf(" ");
+    }
+    printf("\n");
+    return 0;
+   */
 }
