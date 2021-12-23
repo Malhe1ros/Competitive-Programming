@@ -52,7 +52,12 @@ vector<ll> convMod(const vector<ll> &a, const vector<ll> &b) {
 	}
 	return res;
 }
-
+    // 469762049             26    3
+    // 998244353             23    3
+    // 1107296257            24    10
+    // 10000093151233        26    5
+    // 1000000523862017      26    3
+    // 1000000000949747713   26    2
 const ll MOD=998244353;
 int main() {
 	int n,m;cin>>n>>m;
