@@ -17,7 +17,7 @@ using namespace std;
 #define RFOR(i, j) for (int i=j;i>=0;i--)
 #define GO cin.tie(NULL);
 #define FAST ios_base::sync_with_stdio(false);
-#define AE cout<<"ae"<<endl;
+#define AE cout<<"AEEEE"<<endl;
 #define prec(x) cout << fixed << setprecision(x)
 #define sz(x) (int)x.size()
 
