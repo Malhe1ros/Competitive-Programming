@@ -1,3 +1,4 @@
+//computes the length of the common string beggining at i and s[prefix, prefix]
 vector<int> Z(string &s){
   int n=s.length();
   vector<int> z(n);
