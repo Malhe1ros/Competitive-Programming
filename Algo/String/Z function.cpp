@@ -1,4 +1,6 @@
-//computes the length of the common string beggining at i and s[prefix, prefix]
+// z[i] = longest common prefix of the string starting at i and the beggining of the string;
+// aaaaa = 0 4 3 2 1
+// aaabaab = 0 2 1 0 2 1 0
 vector<int> Z(string &s){
   int n=s.length();
   vector<int> z(n);
