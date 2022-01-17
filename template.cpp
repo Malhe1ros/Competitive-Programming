@@ -14,21 +14,16 @@ using namespace std;
 #define all(cont) cont.begin(),cont.end()
 #define rall(cont) cont.rbegin(), cont.rend()
 #define FOR(i, j) for(int i=0;i<j;i++)
-#define RFOR(i, j) for (int i=j;i>=0;i--)
 #define GO cin.tie(NULL);
 #define FAST ios_base::sync_with_stdio(false);
 #define AE cout<<"AEEEE"<<endl;
-#define prec(x) cout << fixed << setprecision(x)
+#define _L cout<<"Linha "<<__LINE__<<endl;
 #define sz(x) (int)x.size()
 
 typedef pair<int,int> pii;
 typedef vector<int> VI;
 typedef vector<pii> VPII;
 typedef vector<VI> VVI;
-typedef priority_queue<int> max_heap;
-typedef priority_queue<pii> max_heapii;
-typedef priority_queue<int,VI,greater<int>> min_heap;
-typedef priority_queue<pii,VPII,greater<pii>> min_heapii;
 
 const long double PI = 3.14159265359;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -55,7 +50,16 @@ void print(vector<int>v){
 void print(pii p){
 	cout<<"{"<<p.first<<", "<<p.second<<"}"<<endl;
 }
- 
+
+template<typename Container>
+void print(Container beg){
+    cout<<"[";
+    for(auto k:beg){
+        cout<<k<<" ";
+    }
+    cout<<"]"<<endl;
+}
+
 signed main(){
 	GO FAST
 	int t;cin>>t;
