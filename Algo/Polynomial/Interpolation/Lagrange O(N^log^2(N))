@@ -1,0 +1,192 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+//lagrange interpolation in O(Nlog^2(N))
+
+constexpr int kMod = 998244353;
+
+int fpow(int a, int n) {
+  int res = 1;
+  while (n > 0) {
+    if (n & 1) res = 1LL * res * a % kMod;
+    a = 1LL * a * a % kMod;
+    n >>= 1;
+  }
+  return res;
+}
+
+namespace ntt {
+
+constexpr int kN = 262144;
+constexpr int kRoot = 3;
+vector<int> omega;
+
+void Init() {
+  omega.resize(kN + 1);
+  long long x = fpow(kRoot, (kMod - 1) / kN);
+  omega[0] = 1;
+  for (int i = 1; i <= kN; ++i) {
+    omega[i] = 1LL * omega[i - 1] * x % kMod;
+  }
+}
+
+void BitReverse(vector<int> &v, int n) {
+  int z = __builtin_ctz(n) - 1;
+  for (int i = 0; i < n; ++i) {
+    int x = 0;
+    for (int j = 0; j <= z; ++j) x ^= (i >> j & 1) << (z - j);
+    if (x > i) swap(v[x], v[i]);
+  }
+}
+
+void Transform(vector<int> &v, int n) {
+  BitReverse(v, n);
+  for (int s = 2; s <= n; s <<= 1) {
+    int z = s >> 1;
+    for (int i = 0; i < n; i += s) {
+      for (int k = 0; k < z; ++k) {
+        int x = 1LL * v[i + k + z] * omega[kN / s * k] % kMod;
+        v[i + k + z] = (v[i + k] + kMod - x) % kMod;
+        (v[i + k] += x) %= kMod;
+      }
+    }
+  }
+}
+
+void InverseTransform(vector<int> &v, int n) {
+  Transform(v, n);
+  for (int i = 1; i < n / 2; ++i) swap(v[i], v[n - i]);
+  const int kInv = fpow(n, kMod - 2);
+  for (int i = 0; i < n; ++i) v[i] = 1LL * v[i] * kInv % kMod;
+}
+
+}  // namespace ntt
+
+namespace poly {
+
+vector<int> Multiply(vector<int> a, vector<int> b) {
+  int n = a.size(), m = b.size(), k = 1;
+  while (k < n + m - 1) k <<= 1;
+  a.resize(k);
+  b.resize(k);
+  ntt::Transform(a, k);
+  ntt::Transform(b, k);
+  for (int i = 0; i < k; ++i) {
+    a[i] = 1LL * a[i] * b[i] % kMod;
+  }
+  ntt::InverseTransform(a, k);
+  a.resize(n + m - 1);
+  return a;
+}
+
+vector<int> Inverse(const vector<int> &f, int n) {
+  vector<int> q(1, fpow(f[0], kMod - 2));
+  for (int s = 2; s <= n; s <<= 1) {
+    vector<int> fv(f.begin(), f.begin() + s);
+    vector<int> fq(q.begin(), q.end());
+    fv.resize(s + s);
+    fq.resize(s + s);
+    ntt::Transform(fv, s + s);
+    ntt::Transform(fq, s + s);
+    for (int i = 0; i < s + s; ++i) {
+      fv[i] = 1LL * fv[i] * fq[i] % kMod * fq[i] % kMod;
+    }
+    ntt::InverseTransform(fv, s + s);
+    vector<int> res(s);
+    for (int i = 0; i < s; ++i) {
+      res[i] = kMod - fv[i];
+      if (i < (s >> 1)) {
+        int v = 2 * q[i] % kMod;
+        (res[i] += v) >= kMod ? res[i] -= kMod : 0;
+      }
+    }
+    q = res;
+  }
+  return q;
+}
+
+vector<int> Divide(const vector<int> &a, const vector<int> &b) {
+  int n = a.size(), m = b.size(), k = 2;
+  while (k < n - m + 1) k <<= 1;
+  vector<int> ra(k), rb(k);
+  for (int i = 0; i < min(n, k); ++i) ra[i] = a[n - 1 - i];
+  for (int i = 0; i < min(m, k); ++i) rb[i] = b[m - 1 - i];
+  auto rbi = Inverse(rb, k);
+  auto res = Multiply(rbi, ra);
+  res.resize(n - m + 1);
+  reverse(res.begin(), res.end());
+  return res;
+}
+
+vector<int> Modulo(const vector<int> &a, const vector<int> &b) {
+  if (a.size() < b.size()) return a;
+  auto dv = Multiply(Divide(a, b), b);
+  assert(dv.size() == a.size());
+  for (int i = 0; i < dv.size(); ++i) {
+    dv[i] = (a[i] + kMod - dv[i]) % kMod;
+  }
+  while (!dv.empty() && dv.back() == 0) dv.pop_back();
+  return dv;
+}
+
+vector<int> Derivative(const vector<int> &f) {
+  int n = f.size();
+  vector<int> res(n - 1);
+  for (int i = 0; i < n - 1; ++i) {
+    res[i] = 1LL * f[i + 1] * (i + 1) % kMod;
+  }
+  return res;
+}
+
+vector<int> Evaluate(const vector<int> &f, const vector<int> &x) {
+  if (x.empty()) return vector<int>();
+  int n = x.size();
+  vector<vector<int>> up(n * 2);
+  for (int i = 0; i < n; ++i) up[i + n] = {kMod - x[i], 1};
+  for (int i = n - 1; i > 0; --i) up[i] = Multiply(up[i * 2], up[i * 2 + 1]);
+  vector<vector<int>> down(n * 2);
+  down[1] = Modulo(f, up[1]);
+  for (int i = 2; i < n * 2; ++i) down[i] = Modulo(down[i >> 1], up[i]);
+  vector<int> y(n);
+  for (int i = 0; i < n; ++i) y[i] = down[i + n][0];
+  return y;
+}
+
+vector<int> Interpolate(const vector<int> &x, const vector<int> &y) {
+  int n = x.size();
+  vector<vector<int>> up(n * 2);
+  for (int i = 0; i < n; ++i) up[i + n] = {kMod - x[i], 1};
+  for (int i = n - 1; i > 0; --i) up[i] = Multiply(up[i * 2], up[i * 2 + 1]);
+  vector<int> a = Evaluate(Derivative(up[1]), x);
+  for (int i = 0; i < n; ++i) {
+    a[i] = 1LL * y[i] * fpow(a[i], kMod - 2) % kMod;
+  }
+  vector<vector<int>> down(n * 2);
+  for (int i = 0; i < n; ++i) down[i + n] = {a[i]};
+  for (int i = n - 1; i > 0; --i) {
+    auto lhs = Multiply(down[i * 2], up[i * 2 + 1]);
+    auto rhs = Multiply(down[i * 2 + 1], up[i * 2]);
+    assert(lhs.size() == rhs.size());
+    down[i].resize(lhs.size());
+    for (int j = 0; j < lhs.size(); ++j) {
+      down[i][j] = (lhs[j] + rhs[j]) % kMod;
+    }
+  }
+  return down[1];
+}
+
+}  // namespace poly
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+  ntt::Init();
+  int n;
+  cin >> n;
+  vector<int> x(n), y(n);
+  for (int i = 0; i < n; ++i) cin >> x[i];
+  for (int i = 0; i < n; ++i) cin >> y[i];
+  auto res = poly::Interpolate(x, y);
+  for (int i = 0; i < n; ++i) cout << res[i] << " ";
+  cout << "\n";
+}
