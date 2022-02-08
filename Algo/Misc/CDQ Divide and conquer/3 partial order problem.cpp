@@ -96,21 +96,10 @@ void pega(vector<pair<pii,pii>>& l,vector<pair<pii,pii>>& r){
 }
 vector<pair<pii,pii>> v;
 
-int getmid(int l,int r){
-  int m=(l+r)/2;
-  for(int i=m;i<r;i++){
-    if(v[i].first.first!=v[i-1].first.first)return i;
-  }
-  for(int i=m;i>l;i--){
-    if(v[i].first.first!=v[i-1].first.first)return i;
-  }
-  return -1;
-}
 
 void solve(int l,int r){
   if(r-l==1)return;
-  //if(v[l].first==v[r].second)return;
-  auto m=getmid(l,r);
+  auto m=(l+r)/2;
   if(m==-1)return;
   solve(l,m);
   solve(m,r);
@@ -125,6 +114,16 @@ void solve(int l,int r){
   pega(v1,v2);
 }
 
+bool cmp2(const pair<pii,pii>& a,const pair<pii,pii>& b){
+  if(a.first.first==b.first.first){
+    if(a.first.second == b.first.second){
+      return a.SF<b.SF;
+    }
+    return a.FS<b.FS;
+  }
+  return a.first.first>b.first.first;
+}
+
 signed main(){
   GO FAST
 
@@ -134,10 +133,9 @@ signed main(){
     int a,b,c;cin>>a>>b>>c;
     v[i]=MP(MP(a,b),MP(c,i));
   }
-  sort(rall(v));
+  sort(all(v),cmp2);
   solve(0,n);
   FOR(i,n){
     cout<<ans[i]<<"\n";
   }
-  //cout<<'\n';
 }
