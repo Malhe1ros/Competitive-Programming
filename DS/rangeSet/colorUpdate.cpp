@@ -2,13 +2,12 @@
  
 using namespace std;
 
-
 struct colorUpdate{
   set<pair<int,int>> ranges;
   map<pair<int,int>,int> cor;
   colorUpdate(int n){
     ranges.insert({1,n});
-    cor[{1,n}]=0;
+    cor[{1,n}]=1;
   }
   void bota(int lx,int rx,int c){
     ranges.insert({lx,rx});
@@ -50,7 +49,16 @@ struct colorUpdate{
       tira(k.first,k.second,l,r);
     }
     bota(l,r,c);
-  }/*
+  }
+  int find(int x){
+    auto prim=ranges.lower_bound({x,-1});
+    if(prim!=ranges.end()){
+      if(prim->first==x)return cor[*prim];
+    }
+    prim--;
+    return cor[*prim];
+  }
+  /*
   void print(){
     for(auto k:cor){
       cout<<"{"<<k.first.first<<" "<<k.first.second<<"} = "<<k.second<<endl;
@@ -63,6 +71,12 @@ struct colorUpdate{
   }*/
 };
 
+
+
 signed main(){
+  cin.tie(NULL);
+  ios_base::sync_with_stdio(false);
+  int n,q;cin>>n>>q;
+  colorUpdate cu(n);
   
 }
