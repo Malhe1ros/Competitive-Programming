@@ -10,6 +10,10 @@ struct colorUpdate{
     ranges.insert({1,n});
     cor[{1,n}]=0;
   }
+  void bota(int lx,int rx,int c){
+    ranges.insert({lx,rx});
+    cor[{lx,rx}]=c;
+  }
   void tira(int lx,int rx,int l,int r){//vou tirar o range [lx,rx] pra colocar [l,r];
     int corant=cor[{lx,rx}];
     ranges.erase({lx,rx});
@@ -19,21 +23,16 @@ struct colorUpdate{
     }
     if(lx<l){
       if(l-1>=lx){
-        ranges.insert({lx,l-1});
-        cor[{lx,l-1}]=corant;
+        bota(lx,l-1,corant);
       }
     }
     if(rx>r){
       if(r+1<=rx){
-        ranges.insert({r+1,rx});
-        cor[{r+1,rx}]=corant;
+        bota(r+1,rx,corant);
       }
     }
   }
-  void bota(int lx,int rx,int c){
-    ranges.insert({lx,rx});
-    cor[{lx,rx}]=c;
-  }
+
   void insert(int l,int r,int c){
     auto prim=ranges.lower_bound({l,-1});
     if(prim==ranges.end()){
