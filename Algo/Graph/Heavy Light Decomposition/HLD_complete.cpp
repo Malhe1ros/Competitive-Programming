@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 
 #define ll int 
@@ -134,62 +133,62 @@ const int SZ=2e5+10;//maxn
 //HLD<size,is the value on edges?>
 template<int SZ, bool VALS_IN_EDGES> struct HLD { 
 	int N;//HLD size 
-  vector<int> adj[SZ];//adjacency list
+	vector<int> adj[SZ];//adjacency list
 	int par[SZ];//par[i] has the parent of i;
-  int root[SZ];//root[i] has the root of the path which contains i
-  int ddepth[SZ];//ddepth[i] has the depth of i
-  int sz[SZ];//sz[i] has the size of subtree rooted on i;
-  int ti;//for the euler tour stuff;
+	int root[SZ];//root[i] has the root of the path which contains i
+	int ddepth[SZ];//ddepth[i] has the depth of i
+	int sz[SZ];//sz[i] has the size of subtree rooted on i;
+	int ti;//for the euler tour stuff;
 	int pos[SZ];//pos in segtree
-  vector<int> rpos; // rpos gambiarra;
-  int heavy[SZ];//heavy[i] has the heavy child of node i 
+	vector<int> rpos; // rpos gambiarra;
+	int heavy[SZ];//heavy[i] has the heavy child of node i 
 	void addEdge(int x, int y) { adj[x].push_back(y), adj[y].push_back(x); }//adds edges from x to y
 
   //normal dfs, it works, don't bother
 	void dfs(int u,int p) { 
 		sz[u] = 1; 
-    int maior=-1;
-    int quem=-1;
-    par[u]=p;
+		int maior=-1;
+		int quem=-1;
+		par[u]=p;
 		for (auto k :adj[u]) {
-      if(k==p)continue;
-			 ddepth[k] = ddepth[u]+1;
+		if(k==p)continue;
+				ddepth[k] = ddepth[u]+1;
 			dfs(k,u); 
-      sz[u] += sz[k];
+		sz[u] += sz[k];
 			if (sz[k] > maior) {
-        maior=sz[k];
-        quem=k;
-      }
+		maior=sz[k];
+		quem=k;
 		}
-    heavy[u]=quem;
+		}
+		heavy[u]=quem;
 	}
 
   //hld dfs, it works, don't bother
 	void dfsHld(int x,int rr) {
 		pos[x] = ti++; rpos.push_back(x);
-    root[x]=rr;
-    if (heavy[x]==-1) return;
-    dfsHld(heavy[x],rr);
+		root[x]=rr;
+		if (heavy[x]==-1) return;
+		dfsHld(heavy[x],rr);
 		for(auto y:adj[x]) {
-      if (y==heavy[x] || y==par[x])continue;
+		if (y==heavy[x] || y==par[x])continue;
 			dfsHld(y,y); 
-      }
+		}
 	}
 
   //initialize hld with values;
 	void init(vector<int>& valor,int R=0) { 
-    N = valor.size();   
-    par[R]=-1;
-    ddepth[R]=0;
-    ti = 0; 
-    dfs(R,-1);
-      
+		N = valor.size();   
+		par[R]=-1;
+		ddepth[R]=0;
+		ti = 0; 
+		dfs(R,-1);
+
 		dfsHld(R,R); 
-    vector<int>v(N);
-    for(int i=0;i<N;i++){
-      v[i]=valor[rpos[i]];
-    }
-    tree=segtree<ll>(v,0,0);   
+		vector<int>v(N);
+		for(int i=0;i<N;i++){
+		v[i]=valor[rpos[i]];
+		}
+		tree=segtree<ll>(v,0,0);   
 	}
 
   //lowest common ancestor with black magic;
@@ -213,39 +212,37 @@ template<int SZ, bool VALS_IN_EDGES> struct HLD {
 	}*/
 
 	void modifyPath(int x, int y, int v) { 
-    if(root[x]==root[y]){
-      if(pos[x]>pos[y])swap(x,y);
-      tree.update(pos[x]+VALS_IN_EDGES,pos[y]+1,v);
-      return;
-    }
-    if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
-    int a=x;
-    int b=root[x];
-    if(pos[a]>pos[b])swap(a,b);
-    tree.update(pos[a],pos[b]+1,v);
-    modifyPath(par[root[x]],y,v);
+		if(root[x]==root[y]){
+		if(pos[x]>pos[y])swap(x,y);
+		tree.update(pos[x]+VALS_IN_EDGES,pos[y]+1,v);
+		return;
+		}
+		if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
+		int a=x;
+		int b=root[x];
+		if(pos[a]>pos[b])swap(a,b);
+		tree.update(pos[a],pos[b]+1,v);
+		modifyPath(par[root[x]],y,v);
     }
 	
-  ll queryPath(int x, int y) { 
-    if(root[x]==root[y]){
-      if(pos[x]>pos[y])swap(x,y);
-      
-      return tree.query(pos[x]+VALS_IN_EDGES,pos[y]+1);
-    }
-    if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
-    int a=x;
-    int b=root[x];
-    if(pos[a]>pos[b])swap(a,b);
-    return tree.op(queryPath(par[root[x]],y),tree.query(pos[a],pos[b]+1));
+	ll queryPath(int x, int y) { 
+		if(root[x]==root[y]){
+			if(pos[x]>pos[y])swap(x,y);
+			
+			return tree.query(pos[x]+VALS_IN_EDGES,pos[y]+1);
+		}
+		if(ddepth[root[x]]<ddepth[root[y]]) swap(x,y);
+		int a=x;
+		int b=root[x];
+		if(pos[a]>pos[b])swap(a,b);
+		return tree.op(queryPath(par[root[x]],y),tree.query(pos[a],pos[b]+1));
 
-  }
+	}
 
 	void modifySubtree(int x, int v) { 
 		tree.update(pos[x]+VALS_IN_EDGES,pos[x]+sz[x],v); 
-    }
+	}
 
-
-   
 };
 int main(){
   
