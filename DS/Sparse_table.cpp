@@ -8,14 +8,11 @@ struct sparse{
 	int f(int a,int b){
 		return min(a,b);
 	}
-	sparse(vector<int>& arr){
+	sparse(const vector<int>& arr){
 		int n=arr.size();
 		int k=32-__builtin_clz(n);
-		//indo.reserve(k+1);
 		indo.assign(k+1,vector<int>(n));
-		for (int i=0;i<arr.size();i++){
-			indo[0][i]=arr[i];   
-		}
+		indo[0]=arr;
 		int t=1;
 		for (int i=1;i<k;i++){
 			for (int j=0;j<=arr.size()-(1<<i);j++){
