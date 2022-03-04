@@ -7,6 +7,8 @@ using namespace std;
 //#define int ll
 #define PB push_back
 #define MP make_pair
+#define all(cont) cont.begin(),cont.end()
+#define rall(cont) cont.rbegin(), cont.rend()
 #define FOR(i, j) for(int i=0;i<j;i++)
 #define sz(x) (int)x.size()
 
