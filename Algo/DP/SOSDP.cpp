@@ -4,7 +4,7 @@ using namespace std;
  
 #define ld long double
 #define ll long long
-//#define int ll
+#define int ll
 #define FF first.first
 #define FS first.second
 #define SF second.first
@@ -19,16 +19,16 @@ using namespace std;
 #define AE cout<<"AEEEE"<<endl;
 #define _L cout<<"Linha "<<__LINE__<<endl;
 #define sz(x) (int)x.size()
-
+ 
 typedef pair<int,int> pii;
 typedef vector<int> VI;
 typedef vector<pii> VPII;
 typedef vector<VI> VVI;
-
+ 
 const long double PI = 3.14159265359;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ll randint(ll a, ll b){return uniform_int_distribution<ll>(a, b)(rng);}
-
+ 
 #define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
 template<typename ...Args>
 void logger(string vars, Args&&... values) {
@@ -37,7 +37,7 @@ void logger(string vars, Args&&... values) {
     (..., (cout << delim << values, delim = ", "));
     cout<<endl;
 }
-
+ 
 void print(vector<int>v){
 	cout<<"[";
 	FOR(i,sz(v)){
@@ -46,11 +46,11 @@ void print(vector<int>v){
 	}
 	cout<<"]"<<endl;
 }
-
+ 
 void print(pii p){
 	cout<<"{"<<p.first<<", "<<p.second<<"}"<<endl;
 }
-
+ 
 template<typename Container>
 void print(Container beg){
     cout<<"[";
@@ -59,58 +59,51 @@ void print(Container beg){
     }
     cout<<"]"<<endl;
 }
-
-const int N=22;
-const int invertor=(1<<N)-1;
-int inv(int x){
-   // deb(x,invertor);
-    return x^invertor;
-}
-
-const int maxn=(1<<N);
+const int N=20;
+const int maxn=(1<<20);
 int A[maxn];
-/*
-int dp[maxn][N+1];
-void SOS(){
-    for(int mask = 0; mask < (1<<N); ++mask){
-	    dp[mask][0] = A[mask];	//handle base case separately (leaf states)
-        for(int i = 1;i <= N; ++i){
-            int bit=(1<<(i-1));
-            if(mask & bit)
-                dp[mask][i] = min(dp[mask][i-1] , dp[mask^bit][i-1]);
-            else
-                dp[mask][i] = dp[mask][i-1];
-        }
-    }
-}*/
-
 int F[maxn];
-void SOS(){
-    for(int i = 0; i<(1<<N); ++i)
+int B[maxn];
+int G[maxn];
+int C[maxn];
+int H[maxn];
+int inv(int a){
+  return maxn-1-a;
+}
+void SOS1(){
+      for(int i = 0; i<(1<<N); ++i)
         F[i] = A[i];
     for(int i = 0;i < N; ++i) for(int mask = 0; mask < (1<<N); ++mask){
         if(mask & (1<<i))
-            F[mask] =min(F[mask], F[mask^(1<<i)]);
+            F[mask] =F[mask] + F[mask^(1<<i)];
     }
 }
-
+void SOS2(){
+      for(int i = 0; i<(1<<N); ++i)
+        G[i] = B[i];
+    for(int i = 0;i < N; ++i) for(int mask = 0; mask < (1<<N); ++mask){
+        if(mask & (1<<i))
+            G[mask] =G[mask] + G[mask^(1<<i)];
+    }
+}
+ 
+ 
+//problem is to print for all x
+//number of y such that x|y=x (submask)
+//number of y such that x&y==x (supermask)
+//number of y such that x&y!=0 (share 1 bit with me)
 signed main(){
-   GO FAST
-   int n;cin>>n;
-
-   VI v(n);
-   FOR(i,maxn)A[i]=INT_MAX;
-   FOR(i,n){
-       int a;cin>>a;
-       v[i]=a;
-       A[a]=a;
-   }
-   SOS();
-   FOR(i,n){
-       auto R=F[inv(v[i])];
-       if(R==INT_MAX)cout<<-1<<' ';
-       else cout<<R<<' ';
-   }
-   cout<<'\n';
-    
+  GO FAST
+  int n;cin>>n;
+  VI v(n);
+  FOR(i,n)cin>>v[i];
+  FOR(i,n){
+    A[v[i]]++;
+    B[inv(v[i])]++;
+  }
+  SOS1();
+  SOS2();
+  FOR(i,n){
+    cout<<F[v[i]]<<" "<<G[inv(v[i])]<<" "<<n-F[inv(v[i])]<<'\n';
+  }
 }
