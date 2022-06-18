@@ -38,6 +38,15 @@ void logger(string vars, Args&&... values) {
     cout<<endl;
 }
 
+template<typename Container>
+void print(Container beg){
+    cout<<"[";
+    for(auto k:beg){
+        cout<<k<<" ";
+    }
+    cout<<"]"<<endl;
+}
+
 void print(vector<int>v){
 	cout<<"[";
 	FOR(i,sz(v)){
@@ -49,15 +58,6 @@ void print(vector<int>v){
 
 void print(pii p){
 	cout<<"{"<<p.first<<", "<<p.second<<"}"<<endl;
-}
-
-template<typename Container>
-void print(Container beg){
-    cout<<"[";
-    for(auto k:beg){
-        cout<<k<<" ";
-    }
-    cout<<"]"<<endl;
 }
 
 signed main(){
