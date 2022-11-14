@@ -1,0 +1,7 @@
+If I have points (x,y) in which I define the distance to be |x0-x1| + |y0 - y1| (manhattan)
+I can apply the transformation (x,y) -> (x+y,x-y) and the distance becomes max(|x0-x1|,|y0-y1|) (chebysev)
+
+If I have points (x,y) in which I define the distance to be max(|x0-x1|,|y0-y1|)(chebysev)
+I can apply the transformation (x,y) -> (x+y,x-y) and the distance becomes (1/2)*(|x0-x1| + |y0 - y1|) (manhattan/2)
+
+Remember min(a,b) = a + b - max(a,b) so we can apply the same idea to minimums;
