@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
- 
+#include <ext/random>
 using namespace std;
  
 #define ld long double
@@ -19,16 +19,16 @@ using namespace std;
 #define AE cout<<"AEEEE"<<endl;
 #define _L cout<<"Linha "<<__LINE__<<endl;
 #define sz(x) (int)x.size()
-
+ 
 typedef pair<int,int> pii;
 typedef vector<int> VI;
 typedef vector<pii> VPII;
 typedef vector<VI> VVI;
-
+ 
 const long double PI = 3.14159265359;
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+__gnu_cxx::sfmt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ll randint(ll a, ll b){return uniform_int_distribution<ll>(a, b)(rng);}
-
+ 
 #define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
 template<typename ...Args>
 void logger(string vars, Args&&... values) {
@@ -37,7 +37,7 @@ void logger(string vars, Args&&... values) {
     (..., (cout << delim << values, delim = ", "));
     cout<<endl;
 }
-
+ 
 template<typename Container>
 void print(Container beg){
     cout<<"[";
@@ -46,7 +46,7 @@ void print(Container beg){
     }
     cout<<"]"<<endl;
 }
-
+ 
 void print(vector<int>v){
 	cout<<"[";
 	FOR(i,sz(v)){
@@ -55,17 +55,21 @@ void print(vector<int>v){
 	}
 	cout<<"]"<<endl;
 }
-
+ 
 void print(pii p){
 	cout<<"{"<<p.first<<", "<<p.second<<"}"<<endl;
 }
 
+
 signed main(){
-	GO FAST
-	int t;cin>>t;
-	while(t--){
-		int n;cin>>n;
-		VI v(n);
-		FOR(i,n)cin>>v[i];
-	}
+    GO FAST
+    int t;cin>>t;
+    while(t--){
+        int n;cin>>n;
+        VI v(n);
+        FOR(i,n){
+            cin>>v[i];
+        }
+
+    }
 }
