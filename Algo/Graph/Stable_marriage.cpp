@@ -1,90 +1,143 @@
 #include <bits/stdc++.h>
 
-//solves https://www.spoj.com/problems/STABLEMP/
-
-
 using namespace std;
-#define ld long double
-#define ll long long
-//#define int ll
-#define FF first.first
-#define FS first.second
-#define SF second.first
-#define SS second.second
-#define PB push_back
-#define MP make_pair
-#define all(cont) cont.begin(),cont.end()
-#define rall(cont) cont.rbegin(), cont.rend()
-#define FOR(i, j) for(int i=0;i<j;i++)
-#define RFOR(i, j) for (int i=j;i>=0;i--)
-#define GO cin.tie(NULL);
-#define FAST ios_base::sync_with_stdio(false);
-typedef pair<int,int> pii;
- 
+/*
+  Stable marriage
+  O(N*M);
+  Os vetores estao em ordem de preferencia, ou seja:
+  first[i] = ordenado pela pessoa de second que mais quer
+  first[i][0] = pessoa de second que i mais prefere
+  E vice-versa
 
-
-// Your function
-//DEBBUGGING STUFF, JUST USE deb(a,b,c) and it will print the variables;
-#define deb(...) logger(#__VA_ARGS__, __VA_ARGS__)
-template<typename ...Args>
-void logger(string vars, Args&&... values) {
-    cout << vars << " = ";
-    string delim = "";
-    (..., (cout << delim << values, delim = ", "));
-    cout<<endl;
-
+  Pode ter relações não monogamicas na direita,  cap[i] representa quantas pessoas o second pode ter;
+  Para stable matching marriage, cap[i] = 1 para todo i; 
+*/
+std::vector<std::vector<int>> stableMarriage(std::vector<std::vector<int>> first, std::vector<std::vector<int>> second, std::vector<int> cap) {
+	assert(cap.size() == second.size());
+	int n = (int) first.size(), m = (int) second.size();
+	// if O(N * M) first in memory, use table
+	std::map<std::pair<int, int>, int> prio;
+	std::vector<std::set<std::pair<int, int>>> current(m);
+	for(int i = 0; i < n; i++) {
+		std::reverse(first[i].begin(), first[i].end());
+	}
+	for(int i = 0; i < m; i++) {
+		for(int j = 0; j < (int) second[i].size(); j++) {
+			prio[{second[i][j], i}] = j;
+		}
+	}
+	for(int i = 0; i < n; i++) {
+		int on = i;
+		while(!first[on].empty()) {
+			int to = first[on].back();
+			first[on].pop_back();
+			if(cap[to]) {
+				cap[to]--;
+				assert(prio.count({on, to}));
+				current[to].insert({prio[{on, to}], on});
+				break;
+			}
+			assert(!current[to].empty());
+			auto it = current[to].end();
+			it--;
+			if(it->first > prio[{on, to}]) {
+				int nxt = it->second;
+				current[to].erase(it);
+				current[to].insert({prio[{on, to}], on});
+				on = nxt;
+			}
+		}
+	}
+	std::vector<std::vector<int>> ans(m);
+	for(int i = 0; i < m; i++) {
+		for(auto it : current[i]) {
+			ans[i].push_back(it.second);
+		}
+	}
+	return ans;
 }
 
-int main(){
-    GO FAST;
-    int t;cin>>t;
-    while(t--){
-        int n;cin>>n;
-        int pref[n][n];
-        FOR(i,n){
-            int a;cin>>a;a--;
-            FOR(j,n){
-            cin>>pref[a][j];
-            pref[i][j]--;
-        }}
-        int mpref[n][n];
-        FOR(i,n){
-            int b;cin>>b;b--;
-            FOR(j,n){
-            int a;
-            cin>>a;
-            a--;
-            mpref[b][a]=j;
-        }}
-        vector<int> match(n,-1);
-        vector<int> ids(n,0);
-        queue<int> testes;
-        FOR(i,n){
-            testes.push(i);
-        }
-        while(!testes.empty()){
-            auto o=testes.front();
-            testes.pop();
-            int mulher=pref[o][ids[o]];
 
-            if (match[mulher]==-1){
-                match[mulher]=o;
-            }
-            else{    
-                int outpret=match[mulher];
-                if (mpref[mulher][outpret]>mpref[mulher][o]){
-                    ids[outpret]++;
-                    testes.push(outpret);
-                    match[mulher]=o;
-                }
-                else{
-                    ids[o]++;
-                    testes.push(o);
-                }
-            }
-        }
-        FOR(i,n){
-            cout<<i+1<<" "<<match[i]+1<<endl;
-        }
+
+const int maxn = 1010;
+pii qualbrinquedo[maxn];
+int quemta[maxn];
+int qtd[maxn][maxn];
+VI quemjogouminimo[maxn];
+int pref[maxn][maxn];
+int id[maxn];
+signed main(){
+    GO FAST;
+    int n,m;cin>>n>>m;
+    if(m<n){
+      cout<<"impossible\n";
+      return 0;
     }
+    int d,q;cin>>d>>q;
+    auto tira = [&](int tempo,int cria){
+      if(cria==0)return;
+      int brinq = qualbrinquedo[cria].second;
+      int ti = qualbrinquedo[cria].first;
+      qualbrinquedo[cria] = {0,0};
+      quemta[brinq] = 0;
+      qtd[cria][brinq]+=tempo-ti;
+    };
+    auto bota = [&](int tempo,int cria,int brinq){
+      qualbrinquedo[cria] = MP(tempo,brinq);
+      quemta[brinq] = cria;
+      if(pref[cria][brinq]==0){
+        id[cria]++;
+        pref[cria][brinq] = id[cria];
+        
+      }
+    };
+    FOR(i,q){
+      int s,crianca,brinq;
+      cin>>s>>crianca>>brinq;
+      
+      if(brinq==-1){
+        tira(s,crianca);
+      }
+      else{
+        tira(s,quemta[brinq]);
+        tira(s,crianca);
+        bota(s,crianca,brinq);
+      }
+    }
+    FOR(i,n)tira(d,i+1);
+    VVI left;
+    VVI right;
+    for(int i = 1;i<=n;i++){
+      vector<pair<int,int>> caras;
+      for(int j = 1;j<=m;j++){
+        if(pref[i][j]==0){
+          caras.push_back(MP(INT_MAX,j));
+        }
+        else caras.push_back(MP(pref[i][j],j));
+      }
+      sort(all(caras));
+      VI a;
+      FOR(K,sz(caras))a.push_back(caras[K].second-1);
+      left.push_back(a);
+    }
+    for(int j = 1;j<=m;j++){
+      VPII caras;
+      for(int i = 1;i<=n;i++){
+        caras.PB(MP(qtd[i][j],i));
+      }
+      sort(all(caras));
+      VI b;
+      FOR(K,sz(caras))b.push_back(caras[K].second-1);
+      right.push_back(b);
+    }
+
+    vector<int> t(n,1);
+
+    auto ans = stableMarriage(right,left,t);
+
+    for(auto k:ans)cout<<k[0]+1<<" ";
+    cout<<'\n';
+    
+    
+    
 }
