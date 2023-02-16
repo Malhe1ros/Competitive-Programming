@@ -1,0 +1,116 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+// #define int long long
+#define T long long
+
+const int MAXN = 2000010;
+//solves Harbingers - https://cses.fi/179/list/
+namespace p_lichao{
+
+struct Line {
+  T m, b;
+  Line(T _m=0, T _b=0):m(_m),b(_b){}
+  T operator()(T x) { return m * x + b; }
+} seg[MAXN];
+
+
+T l[MAXN], r[MAXN];
+int l_ptr[MAXN], r_ptr[MAXN];
+int next_node = 1;
+
+int build_node(T L, T R, int _l_ptr = 0, int _r_ptr = 0, Line f=Line()){
+  int id = next_node++;
+  l[id] = L, r[id] = R;
+  l_ptr[id] = _l_ptr, r_ptr[id] = _r_ptr;
+  seg[id] = f;
+  return id;
+}
+
+int get_node(int node, bool is_l){
+  T m = (l[node] + r[node]) / 2;
+  if(is_l){
+    if(!l_ptr[node]) 
+      l_ptr[node] = build_node(l[node], m);
+    return l_ptr[node];
+  }else{
+    if(!r_ptr[node]) 
+      r_ptr[node] = build_node(m + 1, r[node]);
+    return r_ptr[node];
+  }
+}
+
+// returns id to new persistent node
+int insert(int node, Line f){
+  T m = (l[node] + r[node]) / 2;
+  Line g = seg[node];
+
+  bool better_at_m = f(m) > g(m);
+
+  if(better_at_m) swap(g, f);
+
+  if(l[node] == r[node]){ // stop criteria, eps if double
+    return build_node(l[node], r[node], 0, 0, g);  
+  }
+
+  bool better_at_l = f(l[node]) > g(l[node]);
+  bool better_at_r = f(r[node]) > g(r[node]);
+
+  int _l_ptr = l_ptr[node], _r_ptr = r_ptr[node];
+
+  //assert(!(better_at_l && better_at_r));
+  if(better_at_l){
+    _l_ptr = insert(get_node(node, 1), f);
+  }else if(better_at_r){
+    _r_ptr = insert(get_node(node, 0), f);
+  }
+  return build_node(l[node], r[node], _l_ptr, _r_ptr, g);
+}
+
+T query(int node, T x){
+  T m = (l[node] + r[node]) / 2;
+  T ans = seg[node](x);
+  if(x < m){
+    if(l_ptr[node]) ans = max(ans, query(l_ptr[node], x));
+  }else if(r_ptr[node]) ans = max(ans, query(r_ptr[node], x));
+  return ans;
+}
+
+}
+
+vector<pair<int,int>> v[MAXN];
+T dp[MAXN];
+T vel[MAXN], b[MAXN];
+
+void solve(int x, int p, T d, int par_node){
+  dp[x] = b[x] + d * vel[x];
+  dp[x] -= p_lichao::query(par_node, vel[x]); 
+
+  p_lichao::Line f(d, -dp[x]);
+  par_node = p_lichao::insert(par_node, f);
+
+  for(auto [y, ec] : v[x]) if(y != p){
+    solve(y, x, d + ec, par_node);
+  }
+}
+
+int32_t main(){
+  cin.tie(NULL)->sync_with_stdio(false);
+
+  int n; cin >> n;
+  for(int i = 0; i < n - 1; ++i){
+    int a, b, c; cin >> a >> b >> c;
+    a--; b--;
+    v[a].push_back({b, c});
+    v[b].push_back({a, c});
+  }
+
+  for(int i = 1; i < n; ++i){
+    cin >> b[i] >> vel[i];
+  }
+
+  int root = p_lichao::build_node(0, 1e9 + 10);
+  solve(0, -1, 0, root);
+  for(int i = 1; i < n; ++i) cout << dp[i] << " ";
+  cout << endl;
+}
